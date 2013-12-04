@@ -52,6 +52,9 @@ class Tile {
   // TODO: getNeiborandChanceDirectin(side Side)
   // muuttaa seuraavan tiilen Suunta tulo1 (if null tulo2)
   // ja palauttaa seuraavan tiilen 
+  //laserin piirtäminen tänne
+  //on metodit, joilla tiedetään mitkä on viereiset tilet
+  //esim: jos laser tulee left naapurista, menee right naapuriin
   
 }
 
