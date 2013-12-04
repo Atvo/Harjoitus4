@@ -43,5 +43,10 @@ class Tile {
       endShape(CLOSE);
     }
   }
+  
+  //laserin piirtäminen tänne
+  //on metodit, joilla tiedetään mitkä on viereiset tilet
+  //esim: jos laser tulee left naapurista, menee right naapuriin
+  
 }
 
