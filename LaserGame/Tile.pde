@@ -1,6 +1,11 @@
 class Tile {
   int x, y, z, size;
   Side side;
+  // side tulo1
+  // Side meno1
+   // side tulo1
+  // Side meno1
+  
   boolean isCurrentTile;
 
   Tile(int x, int y, int z, int size, Side side) {
@@ -43,5 +48,10 @@ class Tile {
       endShape(CLOSE);
     }
   }
+  
+  // TODO: getNeiborandChanceDirectin(side Side)
+  // muuttaa seuraavan tiilen Suunta tulo1 (if null tulo2)
+  // ja palauttaa seuraavan tiilen 
+  
 }
 
