@@ -57,6 +57,12 @@ void setup() {
 void draw() {
   background(0);
   //noStroke();
+  
+  directionalLight(51, 102, 126, -1, 0, 0);  
+  directionalLight(51, 102, 126, 0, -1, 0);
+  pointLight(51, 102, 126, 35, 40, 36);
+  spotLight(51, 102, 126, 80, 20, 40, -1, 0, 0, PI/2, 2); 
+  
   translate(width/2.0, height/2.0, -100);
   rotateX(rotx);
   rotateY(roty);
