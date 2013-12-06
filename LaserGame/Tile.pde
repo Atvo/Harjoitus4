@@ -1,5 +1,6 @@
 class Tile {
   int x, y, z, size;
+  int squareX, squareY;
   Side side;
   // mistä säde tulee
   Side tulo1;
@@ -11,14 +12,16 @@ class Tile {
   
   boolean isCurrentTile;
 
-  Tile(int x, int y, int z, int size, Side side) {
+  Tile(int x, int y, int z, int size, Side side, int squareX, int squareY) {
     this.x = x;
     this.y = y;
     this.z = z;
+    this.squareX = squareX;
+    this.squareY = squareY;
     this.size = size;
     this.side = side;
     this.isCurrentTile = false;
-    println(this.side + "  x: " + x + "  y: " + y + "  z: " + z);
+    println(this.side + "  x: " + x + "  y: " + y + "  z: " + z + "  squareX: " + squareX + "   squareY: " + squareY);
   }
 
   public void display() {
