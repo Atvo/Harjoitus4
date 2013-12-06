@@ -1,21 +1,24 @@
 class Tile {
   int x, y, z, size;
   Side side;
-  // side tulo1
-  // Side meno1
-   // side tulo1
-  // Side meno1
+  // mistä säde tulee
+  Side tulo1;
+  // minne säde menee
+  Side meno1;
+  // vaihtoehtoiset, jos jo yksi säde ruudussa
+  Side tulo2;
+  Side meno2;
   
   boolean isCurrentTile;
 
   Tile(int x, int y, int z, int size, Side side) {
-
     this.x = x;
     this.y = y;
     this.z = z;
     this.size = size;
     this.side = side;
     this.isCurrentTile = false;
+    println(this.side + "  x: " + x + "  y: " + y + "  z: " + z);
   }
 
   public void display() {
@@ -50,6 +53,11 @@ class Tile {
   }
   
   // TODO: getNeiborandChanceDirectin(side Side)
+
+  
+  void setTulo1(Tile tile, Side tulo1){
+    tile.tulo1 = tulo1;
+  }
   // muuttaa seuraavan tiilen Suunta tulo1 (if null tulo2)
   // ja palauttaa seuraavan tiilen 
   //laserin piirtäminen tänne

@@ -2,7 +2,10 @@ float rotx = PI/4;
 float roty = PI/4;
 Tile[][] frontTiles, backTiles, rightTiles, leftTiles, topTiles, bottomTiles;
 Tile[][][] tiles;
+Edge [] edges;
 int tileSize, cubeSize;
+//kuution reunojen koordinaatit
+int max;
 Tile currentTile;
 
 void setup() {
@@ -16,40 +19,41 @@ void setup() {
   topTiles = new Tile [cubeSize][cubeSize];
   bottomTiles = new Tile [cubeSize][cubeSize];
   tiles = new Tile [6][cubeSize][cubeSize];
+  int max = cubeSize*tileSize/2;
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      frontTiles[i][k] = new Tile(-cubeSize*tileSize/2 + i * tileSize, -cubeSize*tileSize/2 + k * tileSize, cubeSize*tileSize/2, tileSize, Side.FRONT);
-      tiles[0][i][k] = new Tile(-cubeSize*tileSize/2 + i * tileSize, -cubeSize*tileSize/2 + k * tileSize, cubeSize*tileSize/2, tileSize, Side.FRONT);
+      frontTiles[i][k] = new Tile(-max + i * tileSize, -max + k * tileSize, max, tileSize, Side.FRONT);
+      tiles[0][i][k] = new Tile(-max + i * tileSize, -max + k * tileSize, max, tileSize, Side.FRONT);
     }
   }
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      backTiles[i][k] = new Tile(-cubeSize*tileSize/2 + i * tileSize, -cubeSize*tileSize/2 + k * tileSize, -cubeSize*tileSize/2, tileSize, Side.BACK);
-      tiles[1][i][k] = new Tile(-cubeSize*tileSize/2 + i * tileSize, -cubeSize*tileSize/2 + k * tileSize, -cubeSize*tileSize/2, tileSize, Side.BACK);
+      backTiles[i][k] = new Tile(-max + i * tileSize, -max + k * tileSize, -max, tileSize, Side.BACK);
+      tiles[1][i][k] = new Tile(-max + i * tileSize, -max + k * tileSize, -max, tileSize, Side.BACK);
     }
   }
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      rightTiles[i][k] = new Tile(cubeSize*tileSize/2, -cubeSize*tileSize/2 + k * tileSize, -cubeSize*tileSize/2 + i * tileSize, tileSize, Side.RIGHT);
-      tiles[2][i][k] = new Tile(cubeSize*tileSize/2, -cubeSize*tileSize/2 + k * tileSize, -cubeSize*tileSize/2 + i * tileSize, tileSize, Side.RIGHT);
+      rightTiles[i][k] = new Tile(max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.RIGHT);
+      tiles[2][i][k] = new Tile(max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.RIGHT);
     }
   }
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      leftTiles[i][k] = new Tile(-cubeSize*tileSize/2, -cubeSize*tileSize/2 + k * tileSize, -cubeSize*tileSize/2 + i * tileSize, tileSize, Side.LEFT);
-      tiles[3][i][k] = new Tile(-cubeSize*tileSize/2, -cubeSize*tileSize/2 + k * tileSize, -cubeSize*tileSize/2 + i * tileSize, tileSize, Side.LEFT);
+      leftTiles[i][k] = new Tile(-max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.LEFT);
+      tiles[3][i][k] = new Tile(-max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.LEFT);
     }
   }
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      topTiles[i][k] = new Tile(-cubeSize*tileSize/2 + i * tileSize, cubeSize*tileSize/2, -cubeSize*tileSize/2 + k * tileSize, tileSize, Side.TOP);
-      tiles[4][i][k] = new Tile(-cubeSize*tileSize/2 + i * tileSize, cubeSize*tileSize/2, -cubeSize*tileSize/2 + k * tileSize, tileSize, Side.TOP);
+      topTiles[i][k] = new Tile(-max + i * tileSize, max, -max + k * tileSize, tileSize, Side.TOP);
+      tiles[4][i][k] = new Tile(-max + i * tileSize, max, -max + k * tileSize, tileSize, Side.TOP);
     }
   }
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      bottomTiles[i][k] = new Tile(-cubeSize*tileSize/2 + i * tileSize, -cubeSize*tileSize/2, -cubeSize*tileSize/2 + k * tileSize, tileSize, Side.BOTTOM);
-      tiles[5][i][k] = new Tile(-cubeSize*tileSize/2 + i * tileSize, -cubeSize*tileSize/2, -cubeSize*tileSize/2 + k * tileSize, tileSize, Side.BOTTOM);
+      bottomTiles[i][k] = new Tile(-max + i * tileSize, -max, -max + k * tileSize, tileSize, Side.BOTTOM);
+      tiles[5][i][k] = new Tile(-max + i * tileSize, -max, -max + k * tileSize, tileSize, Side.BOTTOM);
     }
   }
 }
@@ -57,12 +61,12 @@ void setup() {
 void draw() {
   background(0);
   //noStroke();
-  
+
   directionalLight(51, 102, 126, -1, 0, 0);  
   directionalLight(51, 102, 126, 0, -1, 0);
   pointLight(51, 102, 126, 35, 40, 36);
   spotLight(51, 102, 126, 80, 20, 40, -1, 0, 0, PI/2, 2); 
-  
+
   translate(width/2.0, height/2.0, -100);
   rotateX(rotx);
   rotateY(roty);
@@ -113,10 +117,16 @@ void mouseDragged() {
   roty += (mouseX-pmouseX) * rate;
 }
 
+
+void alustaEdges(){
+    edges = new Edge [12];  
+    
+}
+
 void checkCurrentTile() {
   Tile tmpTile = null;
   //Tarkistetaan onko nykyinen laatta edelleen valittu, jos on, return
-  
+
   //Jos ei niin etsitään nykyinen laatta
   for (int l = 0; l < 6; l++) {
     for (int i = 0; i < cubeSize; i++) {
@@ -129,3 +139,9 @@ void checkCurrentTile() {
   }
 }
 
+void getTileNeighbor(Tile tile, Side side) {
+   
+  
+  // Jos ollaan reunalla
+  
+}
