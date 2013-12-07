@@ -9,6 +9,7 @@ class Tile {
   // vaihtoehtoiset, jos jo yksi säde ruudussa
   Side tulo2;
   Side meno2;
+  Side [] sides2D;
   
   boolean isCurrentTile;
 
@@ -21,7 +22,25 @@ class Tile {
     this.size = size;
     this.side = side;
     this.isCurrentTile = false;
-    println(this.side + "  x: " + x + "  y: " + y + "  z: " + z + "  squareX: " + squareX + "   squareY: " + squareY);
+    if (side == Side.FRONT) {
+      //TOP, RIGHT, LEFT, FRONT, BACK, BOTTOM
+          Side [] sides2D= {Side.TOP, Side.RIGHT, Side.BOTTOM, Side.LEFT};
+    }
+    else if (side == Side.BACK) {
+          Side [] sides2D= {Side.TOP, Side.LEFT, Side.BOTTOM, Side.RIGHT};
+    }
+    else if (side == Side.RIGHT) {
+          Side [] sides2D= {Side.TOP, Side.BACK, Side.BOTTOM, Side.FRONT};
+    }
+    else if (side == Side.LEFT) {
+          Side [] sides2D= {Side.TOP, Side.FRONT, Side.BOTTOM, Side.BACK};
+    }    
+    else if (side == Side.TOP) {
+          Side [] sides2D= {Side.BACK, Side.RIGHT, Side.FRONT, Side.LEFT};
+    }
+    else if (side == Side.BOTTOM) {
+          Side [] sides2D= {Side.FRONT, Side.RIGHT, Side.BACK, Side.LEFT};
+    }
   }
 
   public void display() {
@@ -60,6 +79,15 @@ class Tile {
   
   void setTulo1(Tile tile, Side tulo1){
     tile.tulo1 = tulo1;
+  }
+  
+  int getSide2D (Side fromSide){
+    for(int i= 0; i<4; i++){
+     if(sides2D[i] == fromSide){
+        return i;
+     }
+    }
+    return 0;
   }
   // muuttaa seuraavan tiilen Suunta tulo1 (if null tulo2)
   // ja palauttaa seuraavan tiilen 
