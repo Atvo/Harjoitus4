@@ -81,8 +81,9 @@ void draw() {
   background(0);
   //noStroke();
 
-  directionalLight(51, 102, 126, -1, 0, 0);  
-  pointLight(51, 102, 126, 35, 40, 36);
+  directionalLight(51, 102, 255, 0, 0, -100); // sininen yleisvalo
+  pointLight(200, 200, 255, width/2, height/2, 150); // r g b -  x y z
+  spotLight(200, 200, 255, width/2, height/2, 150, 0, 0, -1, PI/4, 0.5); // r g b -  x y z mistä - xyz mihin - kulma - intensiteetti
 
   translate(width/2.0, height/2.0, -100);
   rotateX(rotx);
