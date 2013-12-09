@@ -13,6 +13,8 @@ class Tile implements Comparable {
   Side tulo2;
   Side meno2;
   Side [] sides2D;
+  // Onko ruudussa laserit päällä: 0 pohjoinen, 1 itä, 2 etelä, 3 länsi
+  boolean [] lasers;
   
   boolean isCurrentTile;
 
@@ -41,6 +43,7 @@ class Tile implements Comparable {
     this.size = size;
     this.side = side;
     this.isCurrentTile = false;
+    boolean [] lasers = {false, false, false, false};
     if (side == Side.FRONT) {
       //TOP, RIGHT, LEFT, FRONT, BACK, BOTTOM
           Side [] sides2D= {Side.TOP, Side.RIGHT, Side.BOTTOM, Side.LEFT};
@@ -154,8 +157,28 @@ class Tile implements Comparable {
     return 0;
   }
  
- // TODO: get3DSide(); LAURI
+  Side get3DSide(int side2D){
+   return sides2D[side2D]; 
+  }
   
+  void laserOn(int side2D){
+   lasers[side2D] = true; 
+  }
+  
+  void allLasersOff(int side2D){
+    for(int i= 0; i<4; i++){
+        lasers[i] = false;
+    }
+  }
+  
+  boolean hasVector(Vector3d v3){
+     if(this.a == v3 || this.b == v3 || this.c == v3 || this.d == v3){
+      return true; 
+     }
+     else{
+      return false; 
+     }
+  }
   
   // muuttaa seuraavan tiilen Suunta tulo1 (if null tulo2)
   // ja palauttaa seuraavan tiilen 

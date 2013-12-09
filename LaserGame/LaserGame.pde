@@ -80,7 +80,7 @@ void setup() {
 void draw() {
   background(0);
   noStroke(); // jotta sisällä oltavan pallon piirtoviivat eivät näy
-  
+
   //directionalLight(51, 102, 255, 0, 0, -100); // sininen yleisvalo
   directionalLight(0, 0, 0, 0, 0, -100); // musta yleisvalo
   //pointLight(200, 200, 255, width/2, height/2, 150); // r g b -  x y z
@@ -91,26 +91,26 @@ void draw() {
   sphere(400); // pallo, jonka sisällä ollaan (jotta taustalle piirtyy valoa)
   rotateX(rotx);
   rotateY(roty);
-  println("RotX: " + rotx%PI + ", RotY: " + roty%PI);
-  println("MouseX: " + mouseX + ", MouseY: " + mouseY);
+  //println("RotX: " + rotx%PI + ", RotY: " + roty%PI);
+  //println("MouseX: " + mouseX + ", MouseY: " + mouseY);
   //scale(90);
   picked = getPicked();
   stroke(255);
   strokeWeight(20);
-  line(0,0,0,400,0,0);
-  line(0,0,0,0,400,0);
-  line(0,0,0,0,0,400);
+  line(0, 0, 0, 400, 0, 0);
+  line(0, 0, 0, 0, 400, 0);
+  line(0, 0, 0, 0, 0, 400);
   strokeWeight(1);
   //line(mouseX-320, mouseY-180, 0, 0, 0, 300);
   stroke(100);
   //noStroke();
   /*for (int l = 0; l < 6; l++) {
-    for (int i = 0; i < cubeSize; i++) {
-      for (int k = 0; k < cubeSize; k++) {
-        tiles[l][i][k].display();
-      }
-    }
-  }*/
+   for (int i = 0; i < cubeSize; i++) {
+   for (int k = 0; k < cubeSize; k++) {
+   tiles[l][i][k].display();
+   }
+   }
+   }*/
   for (int i = 0; i < tiles2.size(); i++) {
     Tile t = (Tile)tiles2.get(i);
     t.isCurrentTile = false;
@@ -156,7 +156,7 @@ void alustaEdges() {
 }
 
 void checkCurrentTile() {
-  if(currentTile != null){
+  if (currentTile != null) {
     currentTile.isCurrentTile = false;
   }
   Tile tmpTile = null;
@@ -169,34 +169,34 @@ void checkCurrentTile() {
     for (int i = 0; i < cubeSize; i++) {
       for (int k = 0; k < cubeSize; k++) {
         tmpTile = tiles[l][i][k];
-        if (l == 0){
+        if (l == 0) {
           //projectedX = (sin(roty)*100+cos(roty)*tileSize*(i-cubeSize/2)+width/2);
           //println("PX: " + projectedX);
-          xHypo = (float)(Math.sqrt(Math.pow(cubeSize*tileSize/2,2)+Math.pow(tileSize*(i-cubeSize/2),2)));
-          if (i > 5){
+          xHypo = (float)(Math.sqrt(Math.pow(cubeSize*tileSize/2, 2)+Math.pow(tileSize*(i-cubeSize/2), 2)));
+          if (i > 5) {
             xAlpha = roty + acos(100/xHypo);
           }
-          else{
+          else {
             xAlpha = roty - acos(100/xHypo);
           }
           X2 = xHypo*xHypo*cos(xAlpha)*sin(xAlpha)/(300-xHypo*cos(xAlpha));
           X1 = xHypo*sin(xAlpha);
-          yHypo = (float)(Math.sqrt(Math.pow(cubeSize*tileSize/2,2)+Math.pow(tileSize*(k-cubeSize/2),2)));
-          if (k > 5){
+          yHypo = (float)(Math.sqrt(Math.pow(cubeSize*tileSize/2, 2)+Math.pow(tileSize*(k-cubeSize/2), 2)));
+          if (k > 5) {
             yAlpha = rotx + acos(100/yHypo);
           }
-          else{
+          else {
             yAlpha = rotx - acos(100/yHypo);
           }
           Y2 = yHypo*yHypo*cos(yAlpha)*sin(yAlpha)/(300-yHypo*cos(yAlpha));
           Y1 = yHypo*sin(yAlpha);
           projectedX = width/2 + X1 + X2;
           projectedY = height/2 + Y1 + Y2;
-          
+
           /*if(l == 0 && i == 5 && k == 5){
-            //println("MouseX: " + mouseX + ", MouseY: " + mouseY + ", tmpH: " + tmpHypo + ", RotY: " + roty + ", tmpA: " + tmpAlpha + ", tmpX1: " + tmpX1 + ", tmpX2: " + tmpX2 + ", ActualX: " + tiles[0][5][5].x + ", ProjectedX: " + projectedX);
-          }*/
-          if (mouseX < projectedX + tileSize && mouseX > projectedX && mouseY < projectedY + tileSize && mouseY > projectedY){
+           //println("MouseX: " + mouseX + ", MouseY: " + mouseY + ", tmpH: " + tmpHypo + ", RotY: " + roty + ", tmpA: " + tmpAlpha + ", tmpX1: " + tmpX1 + ", tmpX2: " + tmpX2 + ", ActualX: " + tiles[0][5][5].x + ", ProjectedX: " + projectedX);
+           }*/
+          if (mouseX < projectedX + tileSize && mouseX > projectedX && mouseY < projectedY + tileSize && mouseY > projectedY) {
             println("Current tile: Front: " + i + "/" + k + ", PX: " + projectedX + ", PY: " + projectedY);
             println("MouseX: " + mouseX + ", MouseY: " + mouseY + ", tmpH: " + xHypo + ", RotY: " + roty + ", tmpA: " + xAlpha + ", tmpX1: " + X1 + ", tmpX2: " + X2 + ", ActualX: " + tiles[0][i][k].x + ", ProjectedX: " + projectedX);
             tiles[l][i][k].isCurrentTile = true;
@@ -213,7 +213,7 @@ void checkCurrentTile() {
 //TOP, RIGHT, LEFT, FRONT, BACK, BOTTOM
 
 Tile getTileNeighbor(Tile tile, int side2Dto) {
-  Tile [][] myTiles = new Tile [cubeSize][cubeSize];
+  Tile [][] neiTiles = new Tile [cubeSize][cubeSize];
   boolean overEdge = false;
   // mentäessä kulman yli reunan pääte ja alkupiste
   int x1, y1, z1;
@@ -234,41 +234,69 @@ Tile getTileNeighbor(Tile tile, int side2Dto) {
   }    
 
   if ((overEdge == false && tile.side == Side.FRONT) || (overEdge && tile.sides2D[side2D] == Side.FRONT)) {
-    myTiles = frontTiles;
+    neiTiles = frontTiles;
   }
   else if ((overEdge == false && tile.side == Side.BACK) || (overEdge && tile.sides2D[side2D] == Side.BACK)) {
-    myTiles = backTiles;
+    neiTiles = backTiles;
   }
   else if ((overEdge == false && tile.side == Side.RIGHT) || (overEdge && tile.sides2D[side2D] == Side.RIGHT)) {
-    myTiles = rightTiles;
+    neiTiles = rightTiles;
   }
   else if ((overEdge == false && tile.side == Side.LEFT) || (overEdge && tile.sides2D[side2D] == Side.LEFT)) {
-    myTiles = leftTiles;
+    neiTiles = leftTiles;
   }    
   else if ((overEdge == false && tile.side == Side.TOP) || (overEdge && tile.sides2D[side2D] == Side.TOP)) {
-    myTiles = topTiles;
+    neiTiles = topTiles;
   }
   else if ((overEdge == false && tile.side == Side.BOTTOM) || (overEdge && tile.sides2D[side2D] == Side.BOTTOM)) {
-    myTiles = bottomTiles;
+    neiTiles = bottomTiles;
   }
 
-  if(overEdge){
-    side2D = myTiles[0][0].getSide2D(tile.side); 
+  if (overEdge) {
+    // tarkistetaanko, onko viereisessä puolessa jollain 2 samaa kulmaa == on naapuri
+    for (int i = 0; i < cubeSize; i++) {
+      for (int k = 0; k < cubeSize; k++) {
+        int l = 0;
+        if(neiTiles[i][k].hasVector(tile.a)){
+           l++; 
+        }
+        if(neiTiles[i][k].hasVector(tile.b)){
+           l++; 
+        }
+        if(neiTiles[i][k].hasVector(tile.c)){
+           l++; 
+        }
+        if(neiTiles[i][k].hasVector(tile.d)){
+           l++; 
+        }
+        // Jos kaksi samaa kulmaa muutetaan naapurin listaa 
+        if(l>1){
+          neiTiles[tile.squareX][tile.squareY-1].laserOn(neiTiles[i][k].getSide2D(tile.side));
+          return neiTiles[i][k];
+        }
+      }
+    }
   }
+
   // Jos ei olla reunalla, palautetaan saman listan viereinen, y kasvaa "alas päin" x oikealle
+  // palauttaa naapurin sekä muuttaa naapurin tulolaserin
   if (side2D == 0) {
-    return myTiles[tile.squareX][tile.squareY-1];
+    neiTiles[tile.squareX][tile.squareY-1].laserOn(2);
+    return neiTiles[tile.squareX][tile.squareY-1];
   }
   else if (side2D == 1) {
-    return myTiles[tile.squareX+1][tile.squareY];
+    neiTiles[tile.squareX][tile.squareY-1].laserOn(3);
+    return neiTiles[tile.squareX+1][tile.squareY];
   }
   else if (side2D == 2) {
-    return myTiles[tile.squareX][tile.squareY+1];
+    neiTiles[tile.squareX][tile.squareY-1].laserOn(0);
+    return neiTiles[tile.squareX][tile.squareY+1];
   }
   else if (side2D == 3) {
-    return myTiles[tile.squareX-1][tile.squareY];
+    neiTiles[tile.squareX][tile.squareY-1].laserOn(1);
+    return neiTiles[tile.squareX-1][tile.squareY];
   }
-  // OTA POIS KUN VALMIS
+  println("ERROR LaserGame CheckNeighbourg: IS HIS OWN NEIGHBOURG?");
   return tile;
 }
 
