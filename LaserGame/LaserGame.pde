@@ -27,9 +27,9 @@ void setup() {
   max = cubeSize*tileSize/2;
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      frontTiles[i][k] = new Tile(-max + i * tileSize, -max + k * tileSize, max, tileSize, Side.FRONT, i, k);
-      tiles[0][i][k] = new Tile(-max + i * tileSize, -max + k * tileSize, max, tileSize, Side.FRONT, i, k);
-      tiles2.add(new Tile(-max + i * tileSize, -max + k * tileSize, max, tileSize, Side.FRONT, i, k));
+      frontTiles[i][k] = new Tile(-max + i * tileSize, -max + k * tileSize, max, tileSize, Side.FRONT, i, k, this);
+      tiles[0][i][k] = new Tile(-max + i * tileSize, -max + k * tileSize, max, tileSize, Side.FRONT, i, k, this);
+      tiles2.add(new Tile(-max + i * tileSize, -max + k * tileSize, max, tileSize, Side.FRONT, i, k, this));
     }
   }
   println("hei: " + max);
@@ -37,41 +37,41 @@ void setup() {
   println("hei2");
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      backTiles[i][k] = new Tile(-max + i * tileSize, -max + k * tileSize, -max, tileSize, Side.BACK, i, k);
-      tiles[1][i][k] = new Tile(-max + i * tileSize, -max + k * tileSize, -max, tileSize, Side.BACK, i, k);
-      tiles2.add(new Tile(-max + i * tileSize, -max + k * tileSize, -max, tileSize, Side.BACK, i, k));
+      backTiles[i][k] = new Tile(-max + i * tileSize, -max + k * tileSize, -max, tileSize, Side.BACK, i, k, this);
+      tiles[1][i][k] = new Tile(-max + i * tileSize, -max + k * tileSize, -max, tileSize, Side.BACK, i, k, this);
+      tiles2.add(new Tile(-max + i * tileSize, -max + k * tileSize, -max, tileSize, Side.BACK, i, k, this));
     }
   }
   back = new Square(Side.BACK, -max, -max, -max, -max, max, -max, max, -max, -max, max, max, -max);  
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      rightTiles[i][k] = new Tile(max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.RIGHT, i, k);
-      tiles[2][i][k] = new Tile(max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.RIGHT, i, k);
-      tiles2.add(new Tile(max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.RIGHT, i, k));
+      rightTiles[i][k] = new Tile(max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.RIGHT, i, k, this);
+      tiles[2][i][k] = new Tile(max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.RIGHT, i, k, this);
+      tiles2.add(new Tile(max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.RIGHT, i, k, this));
     }
   }
   right = new Square(Side.RIGHT, max, -max, -max, max, max, -max, max, -max, max, max, -max, max);
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      leftTiles[i][k] = new Tile(-max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.LEFT, i, k);
-      tiles[3][i][k] = new Tile(-max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.LEFT, i, k);
-      tiles2.add(new Tile(-max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.LEFT, i, k));
+      leftTiles[i][k] = new Tile(-max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.LEFT, i, k, this);
+      tiles[3][i][k] = new Tile(-max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.LEFT, i, k, this);
+      tiles2.add(new Tile(-max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.LEFT, i, k, this));
     }
   }
   left = new Square(Side.LEFT, -max, -max, -max, -max, max, -max, -max, -max, max, max, max, -max);
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      topTiles[i][k] = new Tile(-max + i * tileSize, max, -max + k * tileSize, tileSize, Side.TOP, i, k);
-      tiles[4][i][k] = new Tile(-max + i * tileSize, max, -max + k * tileSize, tileSize, Side.TOP, i, k);
-      tiles2.add(new Tile(-max + i * tileSize, max, -max + k * tileSize, tileSize, Side.TOP, i, k));
+      topTiles[i][k] = new Tile(-max + i * tileSize, max, -max + k * tileSize, tileSize, Side.TOP, i, k, this);
+      tiles[4][i][k] = new Tile(-max + i * tileSize, max, -max + k * tileSize, tileSize, Side.TOP, i, k, this);
+      tiles2.add(new Tile(-max + i * tileSize, max, -max + k * tileSize, tileSize, Side.TOP, i, k, this));
     }
   }
   top = new Square(Side.TOP, -max, max, -max, -max, max, max, max, max, -max, max, max, max);
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      bottomTiles[i][k] = new Tile(-max + i * tileSize, -max, -max + k * tileSize, tileSize, Side.BOTTOM, i, k);
-      tiles[5][i][k] = new Tile(-max + i * tileSize, -max, -max + k * tileSize, tileSize, Side.BOTTOM, i, k);
-      tiles2.add(new Tile(-max + i * tileSize, -max, -max + k * tileSize, tileSize, Side.BOTTOM, i, k));
+      bottomTiles[i][k] = new Tile(-max + i * tileSize, -max, -max + k * tileSize, tileSize, Side.BOTTOM, i, k, this);
+      tiles[5][i][k] = new Tile(-max + i * tileSize, -max, -max + k * tileSize, tileSize, Side.BOTTOM, i, k, this);
+      tiles2.add(new Tile(-max + i * tileSize, -max, -max + k * tileSize, tileSize, Side.BOTTOM, i, k, this));
     }
   }
   bottom = new Square(Side.TOP, -max, -max, -max, -max, -max, max, max, -max, -max, max, -max, max);
@@ -123,6 +123,7 @@ void draw() {
     }
     t.display();
   }
+  //frontTiles[0][0].updateLaser(0);
 }
 
 void mouseDragged() {
@@ -212,91 +213,96 @@ void checkCurrentTile() {
 
 //TOP, RIGHT, LEFT, FRONT, BACK, BOTTOM
 
-Tile getTileNeighbor(Tile tile, int side2Dto) {
+void moveToTileNeighbor(Tile tile, int side2Dto) {
   Tile [][] neiTiles = new Tile [cubeSize][cubeSize];
   boolean overEdge = false;
-  // mentäessä kulman yli reunan pääte ja alkupiste
-  int x1, y1, z1;
-  int x2, y2, z2;
-  int side2D = 10 ;
+
   // tarkistetaan ollaanko menossa reunan yli 
-  if (tile.squareY == 0 && side2D==0) {
+  if (tile.squareY == 0 && side2Dto==0) {
     overEdge = true;
   }
-  else if (tile.squareY == (cubeSize-1) && side2D==2) {
+  else if (tile.squareY == (cubeSize-1) && side2Dto==2) {
     overEdge = true;
   }
-  else if (tile.squareX == (cubeSize-1) && side2D==1) {
+  else if (tile.squareX == (cubeSize-1) && side2Dto==1) {
     overEdge = true;
   }
-  else if (tile.squareX == 0 && side2D==3) {
+  else if (tile.squareX == 0 && side2Dto==3) {
     overEdge = true;
   }    
 
-  if ((overEdge == false && tile.side == Side.FRONT) || (overEdge && tile.sides2D[side2D] == Side.FRONT)) {
+  if ((overEdge == false && tile.side == Side.FRONT) || (overEdge && tile.sides2D[side2Dto] == Side.FRONT)) {
     neiTiles = frontTiles;
   }
-  else if ((overEdge == false && tile.side == Side.BACK) || (overEdge && tile.sides2D[side2D] == Side.BACK)) {
+  else if ((overEdge == false && tile.side == Side.BACK) || (overEdge && tile.sides2D[side2Dto] == Side.BACK)) {
     neiTiles = backTiles;
   }
-  else if ((overEdge == false && tile.side == Side.RIGHT) || (overEdge && tile.sides2D[side2D] == Side.RIGHT)) {
+  else if ((overEdge == false && tile.side == Side.RIGHT) || (overEdge && tile.sides2D[side2Dto] == Side.RIGHT)) {
     neiTiles = rightTiles;
   }
-  else if ((overEdge == false && tile.side == Side.LEFT) || (overEdge && tile.sides2D[side2D] == Side.LEFT)) {
+  else if ((overEdge == false && tile.side == Side.LEFT) || (overEdge && tile.sides2D[side2Dto] == Side.LEFT)) {
     neiTiles = leftTiles;
   }    
-  else if ((overEdge == false && tile.side == Side.TOP) || (overEdge && tile.sides2D[side2D] == Side.TOP)) {
+  else if ((overEdge == false && tile.side == Side.TOP) || (overEdge && tile.sides2D[side2Dto] == Side.TOP)) {
     neiTiles = topTiles;
   }
-  else if ((overEdge == false && tile.side == Side.BOTTOM) || (overEdge && tile.sides2D[side2D] == Side.BOTTOM)) {
+  else if ((overEdge == false && tile.side == Side.BOTTOM) || (overEdge && tile.sides2D[side2Dto] == Side.BOTTOM)) {
     neiTiles = bottomTiles;
   }
 
+
   if (overEdge) {
+
     // tarkistetaanko, onko viereisessä puolessa jollain 2 samaa kulmaa == on naapuri
     for (int i = 0; i < cubeSize; i++) {
       for (int k = 0; k < cubeSize; k++) {
+
         int l = 0;
-        if(neiTiles[i][k].hasVector(tile.a)){
-           l++; 
+        if (neiTiles[i][k].hasVector(tile.a)) {
+          l++;
         }
-        if(neiTiles[i][k].hasVector(tile.b)){
-           l++; 
+        if (neiTiles[i][k].hasVector(tile.b)) {
+          l++;
         }
-        if(neiTiles[i][k].hasVector(tile.c)){
-           l++; 
+        if (neiTiles[i][k].hasVector(tile.c)) {
+          l++;
         }
-        if(neiTiles[i][k].hasVector(tile.d)){
-           l++; 
+        if (neiTiles[i][k].hasVector(tile.d)) {
+          l++;
         }
+
         // Jos kaksi samaa kulmaa muutetaan naapurin listaa 
-        if(l>1){
+        if (l>1) {
+
           neiTiles[tile.squareX][tile.squareY-1].laserOn(neiTiles[i][k].getSide2D(tile.side));
-          return neiTiles[i][k];
+          neiTiles[i][k].updateLaser(neiTiles[i][k].getSide2D(tile.side));
         }
       }
     }
   }
 
+
   // Jos ei olla reunalla, palautetaan saman listan viereinen, y kasvaa "alas päin" x oikealle
   // palauttaa naapurin sekä muuttaa naapurin tulolaserin
-  if (side2D == 0) {
-    neiTiles[tile.squareX][tile.squareY-1].laserOn(2);
-    return neiTiles[tile.squareX][tile.squareY-1];
+  if (!overEdge) {
+
+    if (side2Dto == 0) {
+      neiTiles[tile.squareX][tile.squareY-1].laserOn(2);
+      neiTiles[tile.squareX][tile.squareY-1].updateLaser(2);
+    }
+    else if (side2Dto == 1) {
+      neiTiles[tile.squareX+1][tile.squareY].laserOn(3);
+      neiTiles[tile.squareX+1][tile.squareY].updateLaser(3);
+    }
+    else if (side2Dto == 2) {
+      neiTiles[tile.squareX][tile.squareY+1].laserOn(0);
+      neiTiles[tile.squareX][tile.squareY+1].updateLaser(0);
+    }
+    else if (side2Dto == 3) {
+      neiTiles[tile.squareX-1][tile.squareY].laserOn(1);
+      neiTiles[tile.squareX-1][tile.squareY].updateLaser(1);
+    }
   }
-  else if (side2D == 1) {
-    neiTiles[tile.squareX][tile.squareY-1].laserOn(3);
-    return neiTiles[tile.squareX+1][tile.squareY];
-  }
-  else if (side2D == 2) {
-    neiTiles[tile.squareX][tile.squareY-1].laserOn(0);
-    return neiTiles[tile.squareX][tile.squareY+1];
-  }
-  else if (side2D == 3) {
-    neiTiles[tile.squareX][tile.squareY-1].laserOn(1);
-    return neiTiles[tile.squareX-1][tile.squareY];
-  }
-  println("ERROR LaserGame CheckNeighbourg: IS HIS OWN NEIGHBOURG?");
-  return tile;
+  //println("ERROR LaserGame CheckNeighbourg: side:  " + side2Dto );
 }
 
