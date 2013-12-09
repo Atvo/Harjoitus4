@@ -139,7 +139,7 @@ class Tile implements Comparable {
   // TODO: getNeiborandChanceDirectin(side Side)
 
   
-  void setTulo1(Tile tile, Side tulo1){
+  void setTulo1(Tile tile, int tulo1){
     tile.tulo1 = tulo1;
   }
   
