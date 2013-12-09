@@ -64,9 +64,11 @@ class Tile implements Comparable {
 
   public void display() {
     fill(255);
+    /*MIIKA: otin pois, koska bugittaa valojen kanssa (testaa, ihan makee tietty jos käyttää oikein ja vaikka kaikille sivuille)
     if (side == side.FRONT) {
       fill(255, 0, 0);
     }
+    */
     if (isCurrentTile) {
       fill(0, 0, 255);
     }

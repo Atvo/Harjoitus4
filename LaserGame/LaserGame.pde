@@ -79,13 +79,16 @@ void setup() {
 
 void draw() {
   background(0);
-  //noStroke();
-
-  directionalLight(51, 102, 255, 0, 0, -100); // sininen yleisvalo
-  pointLight(200, 200, 255, width/2, height/2, 150); // r g b -  x y z
-  spotLight(200, 200, 255, width/2, height/2, 150, 0, 0, -1, PI/4, 0.5); // r g b -  x y z mistä - xyz mihin - kulma - intensiteetti
+  noStroke(); // jotta sisällä oltavan pallon piirtoviivat eivät näy
+  
+  //directionalLight(51, 102, 255, 0, 0, -100); // sininen yleisvalo
+  directionalLight(0, 0, 0, 0, 0, -100); // musta yleisvalo
+  //pointLight(200, 200, 255, width/2, height/2, 150); // r g b -  x y z
+  spotLight(200, 200, 255, width/2, height/2, 150, 0, 0, -1, PI, 2); // taustaa varten pointlight (r g b -  x y z mistä - xyz mihin - kulma - intensiteetti)
+  spotLight(200, 200, 255, width/2, height/2, 1000, 0, 0, -100, PI/6, 80); // palikkaa varten pointlight
 
   translate(width/2.0, height/2.0, -100);
+  sphere(400); // pallo, jonka sisällä ollaan (jotta taustalle piirtyy valoa)
   rotateX(rotx);
   rotateY(roty);
   println("RotX: " + rotx%PI + ", RotY: " + roty%PI);
