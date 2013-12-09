@@ -93,9 +93,11 @@ void draw() {
   //scale(90);
   picked = getPicked();
   stroke(255);
+  strokeWeight(20);
   line(0,0,0,400,0,0);
   line(0,0,0,0,400,0);
   line(0,0,0,0,0,400);
+  strokeWeight(1);
   //line(mouseX-320, mouseY-180, 0, 0, 0, 300);
   stroke(100);
   //noStroke();

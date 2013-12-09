@@ -6,9 +6,9 @@ class Tile implements Comparable {
   Vector3d pa, pb, pc, pd;
   Side side;
   // mistä säde tulee
-  Side tulo1;
+  int tulo1;
   // minne säde menee
-  Side meno1;
+  int meno1;
   // vaihtoehtoiset, jos jo yksi säde ruudussa
   Side tulo2;
   Side meno2;
@@ -151,10 +151,26 @@ class Tile implements Comparable {
     }
     return 0;
   }
+ 
+ // TODO: get3DSide(); LAURI
+  
+  
   // muuttaa seuraavan tiilen Suunta tulo1 (if null tulo2)
   // ja palauttaa seuraavan tiilen 
   //laserin piirtäminen tänne
   //on metodit, joilla tiedetään mitkä on viereiset tilet
   //esim: jos laser tulee left naapurista, menee right naapuriin
 }
+
+
+// UPDATE:
+// Getnai(this, suunta2D);
+// PiirräLaser
+// Getnai.update();
+
+
+// PiirräLaserit();
+// kutsuu LaserGamen piirrä laser(xyz, xyz);
+// käyttää omaa listaa laserit, joka boolean 0 1 2 3 -suunnat
+
 
