@@ -96,7 +96,7 @@ void draw() {
   //scale(90);
   picked = getPicked();
   stroke(255);
-  strokeWeight(20);
+  strokeWeight(10);
   line(0, 0, 0, 400, 0, 0);
   line(0, 0, 0, 0, 400, 0);
   line(0, 0, 0, 0, 0, 400);
@@ -130,6 +130,14 @@ void mouseDragged() {
   float rate = 0.01;
   rotx += (pmouseY-mouseY) * rate;
   roty += (mouseX-pmouseX) * rate;
+}
+
+void mouseClicked() {
+  println("Picked: " + picked);
+  if (picked != -1) {
+    Tile tmpTile = tiles2.get(picked);
+    tmpTile.updateLaser(1);
+  }
 }
 int getPicked() {
   int picked = -1;

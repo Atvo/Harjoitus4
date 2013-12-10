@@ -113,6 +113,7 @@ class Tile implements Comparable {
     vertex(c.x, c.y, c.z);
     vertex(d.x, d.y, d.z);
     endShape(CLOSE);
+    drawMyLasers();
     /*if (side == Side.FRONT || side == Side.BACK) {
      beginShape();
      vertex(x, y, z);
@@ -140,6 +141,7 @@ class Tile implements Comparable {
   }
 
   void updateLaser(int tulosuunta2D) {
+    println("UpdateLaser: X: " + x + ", Y: " + y + ", Z: " + z);
     // piirrä omat laserit
     int lahtosuunta2D = 10;
     // TODO: MUUTETAAN JOS ON PEILI
@@ -185,7 +187,11 @@ class Tile implements Comparable {
           y2 = cx-(this.size/2);
         }    
         //println("drawing in " + this.side + " x: " + this.squareX + "  y: " + this.squareY + "  suunta2D: " + i);
+        strokeWeight(5);
+        stroke(0,255,0);
         line(this.cx, this.cy, this.cz, x2, y2, z2);
+        stroke(100);
+        strokeWeight(1);
       }
     }
   }
