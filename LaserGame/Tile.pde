@@ -187,7 +187,7 @@ class Tile implements Comparable {
         else if (sides2D[i] == Side.BACK) {
           y2 = cx-(this.size/2);
         }    
-        println("drawing in " + this.side + " x: " + this.squareX + "  y: " + this.squareY + "  suunta2D: " + i);
+        //println("drawing in " + this.side + " x: " + this.squareX + "  y: " + this.squareY + "  suunta2D: " + i);
         strokeWeight(5);
         stroke(0,255,0);
         //println("cx: " + this.cx + ", cy: " +  this.cy + ", cz: " + this.cz + ", x2: " + x2 + ", y2: " + y2 + ", z2: " + z2);
