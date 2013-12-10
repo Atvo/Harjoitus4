@@ -37,41 +37,46 @@ void setup() {
   println("hei2");
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      backTiles[i][k] = new Tile(-max + i * tileSize, -max + k * tileSize, -max, tileSize, Side.BACK, i, k, this);
-      tiles[1][i][k] = new Tile(-max + i * tileSize, -max + k * tileSize, -max, tileSize, Side.BACK, i, k, this);
-      tiles2.add(new Tile(-max + i * tileSize, -max + k * tileSize, -max, tileSize, Side.BACK, i, k, this));
+      Tile tmpTile = new Tile(-max + i * tileSize, -max + k * tileSize, -max, tileSize, Side.BACK, i, k, this);
+      backTiles[i][k] = tmpTile;
+      tiles[1][i][k] = tmpTile;
+      tiles2.add(tmpTile);
     }
   }
   back = new Square(Side.BACK, -max, -max, -max, -max, max, -max, max, -max, -max, max, max, -max);  
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      rightTiles[i][k] = new Tile(max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.RIGHT, i, k, this);
-      tiles[2][i][k] = new Tile(max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.RIGHT, i, k, this);
-      tiles2.add(new Tile(max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.RIGHT, i, k, this));
+      Tile tmpTile = new Tile(max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.RIGHT, i, k, this);
+      rightTiles[i][k] = tmpTile;
+      tiles[2][i][k] = tmpTile;
+      tiles2.add(tmpTile);
     }
   }
   right = new Square(Side.RIGHT, max, -max, -max, max, max, -max, max, -max, max, max, -max, max);
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      leftTiles[i][k] = new Tile(-max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.LEFT, i, k, this);
-      tiles[3][i][k] = new Tile(-max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.LEFT, i, k, this);
-      tiles2.add(new Tile(-max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.LEFT, i, k, this));
+      Tile tmpTile = new Tile(-max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.LEFT, i, k, this);
+      leftTiles[i][k] = tmpTile;
+      tiles[3][i][k] = tmpTile;
+      tiles2.add(tmpTile);
     }
   }
   left = new Square(Side.LEFT, -max, -max, -max, -max, max, -max, -max, -max, max, max, max, -max);
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      topTiles[i][k] = new Tile(-max + i * tileSize, max, -max + k * tileSize, tileSize, Side.TOP, i, k, this);
-      tiles[4][i][k] = new Tile(-max + i * tileSize, max, -max + k * tileSize, tileSize, Side.TOP, i, k, this);
-      tiles2.add(new Tile(-max + i * tileSize, max, -max + k * tileSize, tileSize, Side.TOP, i, k, this));
+      Tile tmpTile = new Tile(-max + i * tileSize, max, -max + k * tileSize, tileSize, Side.TOP, i, k, this);
+      topTiles[i][k] = tmpTile;
+      tiles[4][i][k] = tmpTile;
+      tiles2.add(tmpTile);
     }
   }
   top = new Square(Side.TOP, -max, max, -max, -max, max, max, max, max, -max, max, max, max);
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      bottomTiles[i][k] = new Tile(-max + i * tileSize, -max, -max + k * tileSize, tileSize, Side.BOTTOM, i, k, this);
-      tiles[5][i][k] = new Tile(-max + i * tileSize, -max, -max + k * tileSize, tileSize, Side.BOTTOM, i, k, this);
-      tiles2.add(new Tile(-max + i * tileSize, -max, -max + k * tileSize, tileSize, Side.BOTTOM, i, k, this));
+      Tile tmpTile = new Tile(-max + i * tileSize, -max, -max + k * tileSize, tileSize, Side.BOTTOM, i, k, this);
+      bottomTiles[i][k] = tmpTile;
+      tiles[5][i][k] = tmpTile;
+      tiles2.add(tmpTile);
     }
   }
   bottom = new Square(Side.TOP, -max, -max, -max, -max, -max, max, max, -max, -max, max, -max, max);
@@ -281,7 +286,6 @@ void moveToTileNeighbor(Tile tile, int side2Dto) {
 
         // Jos kaksi samaa kulmaa muutetaan naapurin listaa 
         if (l>1) {
-
           neiTiles[tile.squareX][tile.squareY-1].laserOn(neiTiles[i][k].getSide2D(tile.side));
           neiTiles[i][k].updateLaser(neiTiles[i][k].getSide2D(tile.side));
         }

@@ -113,7 +113,7 @@ class Tile implements Comparable {
     vertex(c.x, c.y, c.z);
     vertex(d.x, d.y, d.z);
     endShape(CLOSE);
-    drawMyLasers();
+    //drawMyLasers();
     /*if (side == Side.FRONT || side == Side.BACK) {
      beginShape();
      vertex(x, y, z);
@@ -189,6 +189,7 @@ class Tile implements Comparable {
         //println("drawing in " + this.side + " x: " + this.squareX + "  y: " + this.squareY + "  suunta2D: " + i);
         strokeWeight(5);
         stroke(0,255,0);
+        //println("cx: " + this.cx + ", cy: " +  this.cy + ", cz: " + this.cz + ", x2: " + x2 + ", y2: " + y2 + ", z2: " + z2);
         line(this.cx, this.cy, this.cz, x2, y2, z2);
         stroke(100);
         strokeWeight(1);
