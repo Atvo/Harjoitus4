@@ -141,7 +141,8 @@ class Tile implements Comparable {
   }
 
   void updateLaser(int tulosuunta2D) {
-    println("UpdateLaser: X: " + x + ", Y: " + y + ", Z: " + z);
+    println("updating in " + this.side + " x: " + this.squareX + "  y: " + this.squareY + "  suunta2D: " + tulosuunta2D + "  suunta 3D: " + sides2D[tulosuunta2D]);
+    //println("UpdateLaser: X: " + x + ", Y: " + y + ", Z: " + z);
     // piirrä omat laserit
     int lahtosuunta2D = 10;
     // TODO: MUUTETAAN JOS ON PEILI
@@ -186,7 +187,7 @@ class Tile implements Comparable {
         else if (sides2D[i] == Side.BACK) {
           y2 = cx-(this.size/2);
         }    
-        //println("drawing in " + this.side + " x: " + this.squareX + "  y: " + this.squareY + "  suunta2D: " + i);
+        println("drawing in " + this.side + " x: " + this.squareX + "  y: " + this.squareY + "  suunta2D: " + i);
         strokeWeight(5);
         stroke(0,255,0);
         //println("cx: " + this.cx + ", cy: " +  this.cy + ", cz: " + this.cz + ", x2: " + x2 + ", y2: " + y2 + ", z2: " + z2);
