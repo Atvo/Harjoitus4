@@ -266,7 +266,7 @@ void moveToTileNeighbor(Tile tile, int side2Dto) {
 
 
   if (overEdge) {
-    println("reunan yli");
+    //println("reunan yli");
     // tarkistetaanko, onko viereisessä puolessa jollain 2 samaa kulmaa == on naapuri
     for (int i = 0; i < cubeSize; i++) {
       for (int k = 0; k < cubeSize; k++) {
@@ -287,7 +287,7 @@ void moveToTileNeighbor(Tile tile, int side2Dto) {
 
         // Jos kaksi samaa kulmaa muutetaan naapurin listaa 
         if (l>1) {
-                              println("naapuri löydetty i:" + i  + "  k: " + k + " squareY: " + tile.squareY);
+                             // println("naapuri löydetty i:" + i  + "  k: " + k + " squareY: " + tile.squareY);
 
           neiTiles[i][k].laserOn(neiTiles[i][k].getSide2D(tile.side));
           neiTiles[i][k].updateLaser(neiTiles[i][k].getSide2D(tile.side));
