@@ -109,7 +109,12 @@ void draw() {
   line(0, 0, 0, 0, 0, 400);
   strokeWeight(1);
   //line(mouseX-320, mouseY-180, 0, 0, 0, 300);
-  stroke(100);
+  /*stroke(100);
+    strokeWeight(5);
+          stroke(0, 255, 0);
+          line(-100, 5, 100, 100, 5, 100);
+          stroke(100);
+          strokeWeight(1);*/
   //noStroke();
   /*for (int l = 0; l < 6; l++) {
    for (int i = 0; i < cubeSize; i++) {
@@ -610,7 +615,10 @@ void moveToTileNeighbor(Tile tile, int side2Dto) {
   println("moveTo:  x: " + tile.squareX + "  y: " + tile.squareY + " to: " + side2Dto + "  side: " + tile.side);
   Tile [][] neiTiles = new Tile [cubeSize][cubeSize];
   boolean overEdge = false;
-
+  if (tmpCounter > 40) {
+    return;
+  }
+  tmpCounter++;
   // tarkistetaan ollaanko menossa reunan yli 
   if (tile.squareY == 0 && side2Dto==0) {
     overEdge = true;

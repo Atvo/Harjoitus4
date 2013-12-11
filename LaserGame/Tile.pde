@@ -75,15 +75,15 @@ class Tile implements Comparable {
     }
     else if (side == Side.BACK) {
       sides2D[0] = Side.TOP;
-      sides2D[1] = Side.LEFT;
+      sides2D[1] = Side.RIGHT;
       sides2D[2] = Side.BOTTOM;
-      sides2D[3] = Side.RIGHT;
+      sides2D[3] = Side.LEFT;
     }
     else if (side == Side.RIGHT) {
       sides2D[0] = Side.TOP;
-      sides2D[1] = Side.BACK;
+      sides2D[1] = Side.FRONT;
       sides2D[2] = Side.BOTTOM;
-      sides2D[3] = Side.FRONT;
+      sides2D[3] = Side.BACK;
     }
     else if (side == Side.LEFT) {        
       sides2D[0] = Side.TOP;
@@ -92,16 +92,16 @@ class Tile implements Comparable {
       sides2D[3] = Side.BACK;
     }    
     else if (side == Side.TOP) {
-      sides2D[0] = Side.BACK;
-      sides2D[1] = Side.RIGHT;
-      sides2D[2] = Side.FRONT;
-      sides2D[3] = Side.LEFT;
+      sides2D[0] = Side.LEFT;
+      sides2D[1] = Side.FRONT;
+      sides2D[2] = Side.RIGHT;
+      sides2D[3] = Side.BACK;
     }
     else if (side == Side.BOTTOM) {
-      sides2D[0] = Side.FRONT;
-      sides2D[1] = Side.RIGHT;
-      sides2D[2] = Side.BACK;
-      sides2D[3] = Side.LEFT;
+      sides2D[0] = Side.LEFT;
+      sides2D[1] = Side.FRONT;
+      sides2D[2] = Side.RIGHT;
+      sides2D[3] = Side.BACK;
     }
   }
 
