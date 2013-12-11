@@ -1,14 +1,9 @@
 import java.util.Collections;
-import ddf.minim.*;
-
-AudioPlayer player;
-Minim minim;  // pelin aani
 float rotx = PI/4;
 float roty = PI/4;
 Tile[][] frontTiles, backTiles, rightTiles, leftTiles, topTiles, bottomTiles;
 ArrayList<Tile> tiles2;
 Tile[][][] tiles;
-Tile base1Tile, base2Tile, blockTile;
 Edge [] edges;
 Square front, back, right, left, top, bottom;
 int tileSize, cubeSize;
@@ -17,8 +12,6 @@ int max;
 Tile currentTile;
 int picked;
 int tmpCounter;
-boolean player1Won, player2Won;
-boolean rightOrLeftMirror;
 
 
 void setup() {
@@ -35,15 +28,11 @@ void setup() {
   tiles2 = new ArrayList<Tile>();
   tiles = new Tile [6][cubeSize][cubeSize];
   max = cubeSize*tileSize/2;
-  player1Won = false;
-  player2Won = false;
-  rightOrLeftMirror = true;
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      Tile tmpTile = new Tile(-max + i * tileSize, -max + k * tileSize, max, tileSize, Side.FRONT, i, k, this);
-      frontTiles[i][k] = tmpTile;
-      tiles[0][i][k] = tmpTile;
-      tiles2.add(tmpTile);
+      frontTiles[i][k] = new Tile(-max + i * tileSize, -max + k * tileSize, max, tileSize, Side.FRONT, i, k, this);
+      tiles[0][i][k] = new Tile(-max + i * tileSize, -max + k * tileSize, max, tileSize, Side.FRONT, i, k, this);
+      tiles2.add(new Tile(-max + i * tileSize, -max + k * tileSize, max, tileSize, Side.FRONT, i, k, this));
     }
   }
   println("hei: " + max);
@@ -78,7 +67,7 @@ void setup() {
   left = new Square(Side.LEFT, -max, -max, -max, -max, max, -max, -max, -max, max, max, max, -max);
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      Tile tmpTile = new Tile(-max + i * tileSize, -max, -max + k * tileSize, tileSize, Side.TOP, i, k, this);
+      Tile tmpTile = new Tile(-max + i * tileSize, max, -max + k * tileSize, tileSize, Side.TOP, i, k, this);
       topTiles[i][k] = tmpTile;
       tiles[4][i][k] = tmpTile;
       tiles2.add(tmpTile);
@@ -87,32 +76,25 @@ void setup() {
   top = new Square(Side.TOP, -max, max, -max, -max, max, max, max, max, -max, max, max, max);
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      Tile tmpTile = new Tile(-max + i * tileSize, max, -max + k * tileSize, tileSize, Side.BOTTOM, i, k, this);
+      Tile tmpTile = new Tile(-max + i * tileSize, -max, -max + k * tileSize, tileSize, Side.BOTTOM, i, k, this);
       bottomTiles[i][k] = tmpTile;
       tiles[5][i][k] = tmpTile;
       tiles2.add(tmpTile);
     }
   }
   bottom = new Square(Side.TOP, -max, -max, -max, -max, -max, max, max, -max, -max, max, -max, max);
-  base1Tile = frontTiles[4][5];
-  base2Tile = frontTiles[5][5];
-  blockTile = backTiles[5][5];
-  moveToTileNeighbor(base2Tile, Side.LEFT);
-  moveToTileNeighbor(base1Tile, Side.RIGHT);
-  
-  minim = new Minim(this);
-  player = minim.loadFile("millionaire.mp3", 2048);
-  player.loop();
 }
 
 void draw() {
   background(0);
   noStroke(); // jotta sisällä oltavan pallon piirtoviivat eivät näy
 
+  //directionalLight(51, 102, 255, 0, 0, -100); // sininen yleisvalo
   directionalLight(0, 0, 0, 0, 0, -100); // musta yleisvalo
-  spotLight(200, 200, 255, width/2, height/2, 150, 0, 0, -1, PI, 1); // taustaa varten pointlight (r g b -  x y z mistä - xyz mihin - kulma - intensiteetti)
+  //pointLight(200, 200, 255, width/2, height/2, 150); // r g b -  x y z
+  spotLight(200, 200, 255, width/2, height/2, 150, 0, 0, -1, PI, 2); // taustaa varten pointlight (r g b -  x y z mistä - xyz mihin - kulma - intensiteetti)
   spotLight(50, 50, 50, width/2, height/2, 150, 0, 0, -1, PI, 1); // palikkaa varten pointlight
-  spotLight(50, 50, 50, mouseX, mouseY, 600, 0, 0, -1, PI/2, 600); // hiiren mukana liikkuva pieni valonlahde
+  spotLight(102, 153, 204, mouseX, mouseY, 600, 0, 0, -1, PI/2, 600);
 
   translate(width/2.0, height/2.0, -100);
   sphere(400); // pallo, jonka sisällä ollaan (jotta taustalle piirtyy valoa)
@@ -130,11 +112,11 @@ void draw() {
   strokeWeight(1);
   //line(mouseX-320, mouseY-180, 0, 0, 0, 300);
   /*stroke(100);
-   strokeWeight(5);
-   stroke(0, 255, 0);
-   line(-100, 5, 100, 100, 5, 100);
-   stroke(100);
-   strokeWeight(1);*/
+    strokeWeight(5);
+          stroke(0, 255, 0);
+          line(-100, 5, 100, 100, 5, 100);
+          stroke(100);
+          strokeWeight(1);*/
   //noStroke();
   /*for (int l = 0; l < 6; l++) {
    for (int i = 0; i < cubeSize; i++) {
@@ -158,13 +140,6 @@ void draw() {
   //frontTiles[0][0].updateLaser(0);
 }
 
-void stop()
-{
-  player.close();
-  minim.stop();
-  super.stop();
-}
-
 void mouseDragged() {
   float rate = 0.01;
   rotx += (pmouseY-mouseY) * rate;
@@ -175,22 +150,11 @@ void mouseClicked() {
   //removeAllLasers();
   tmpCounter = 0;
   println("Picked: " + picked);
-  if (mouseButton == RIGHT) {
-    if (rightOrLeftMirror) {
-      rightOrLeftMirror = false;
-    }
-    else {
-      rightOrLeftMirror = true;
-    }
-  }
-  else if (picked != -1) {
-    removeAllLasers();
+  if (picked != -1) {
     Tile tmpTile = tiles2.get(picked);
     //tmpTile.updateLaser(1);
     //tmpTile.updateLaser2(Side.LEFT);
-    tmpTile.mirror = new Mirror(rightOrLeftMirror, tmpTile.side);
-    moveToTileNeighbor(base2Tile, Side.LEFT);
-    moveToTileNeighbor(base1Tile, Side.RIGHT);
+    moveToTileNeighbor(tmpTile, Side.LEFT);
   }
 }
 int getPicked() {
@@ -276,22 +240,15 @@ void checkCurrentTile() {
 //TOP, RIGHT, LEFT, FRONT, BACK, BOTTOM
 void moveToTileNeighbor(Tile prev, Side fromSide) {
 
-  //tmpCounter++;
-  //println("Move: X: " + prev.x + ", Y: " + prev.y + ", Z: " + prev.z + ", SIDE: " + prev.side + ", FROM: " + fromSide + ", SX: " + prev.squareX + ", SY: " + prev.squareY);
+  if (tmpCounter > 40) {
+    return;
+  }
+  tmpCounter++;
+  println("Move: X: " + prev.x + ", Y: " + prev.y + ", Z: " + prev.z + ", SIDE: " + prev.side + ", FROM: " + fromSide + ", SX: " + prev.squareX + ", SY: " + prev.squareY);
   Tile neighbor = null;
   boolean overEdge = false;
   Side toSide = fromSide;
-  //println("fromsIde: " + fromSide);
-  if (prev.mirror != null) {
-    toSide = prev.mirror.changeLaserDirection(fromSide);
-  }
-  if (prev.mirror != null) {
-    //fromSide = prev.mirror.changeLaserDirection(fromSide);
-  }
   prev.updateLaser2(fromSide);
-  if (prev.mirror != null) {
-    fromSide = prev.mirror.changeLaserDirection(fromSide);
-  }
   if (prev.side == Side.FRONT) {
     if (prev.squareX == 0 && fromSide == Side.RIGHT) {
       overEdge = true;
@@ -324,7 +281,7 @@ void moveToTileNeighbor(Tile prev, Side fromSide) {
         neighbor = frontTiles[prev.squareX+1][prev.squareY];
       }
       else {
-        //println("OVEREDGE");
+        println("OVEREDGE");
         toSide = prev.side;
         neighbor = rightTiles[cubeSize-1][prev.squareY];
       }
@@ -342,7 +299,7 @@ void moveToTileNeighbor(Tile prev, Side fromSide) {
 
     if (fromSide == Side.BOTTOM) {
       if (!overEdge) {
-        neighbor = frontTiles[prev.squareX][prev.squareY-1];
+        neighbor = frontTiles[prev.squareX][prev.squareY+1];
       }
       else {
         toSide = prev.side;
@@ -645,19 +602,6 @@ void moveToTileNeighbor(Tile prev, Side fromSide) {
       }
     }
   }
-  if (neighbor == blockTile) {
-    return;
-  }
-  if (neighbor == base1Tile) {
-    println("PLAYER2 WINS");
-    player2Won = true;
-    return;
-  }
-  if (neighbor == base2Tile) {
-    println("PLAYER1 WINS");
-    player1Won = true;
-    return;
-  }
   if (overEdge) {
     prev.updateLaser2(neighbor.side);
   }
@@ -777,4 +721,5 @@ void removeAllLasers() {
     }
   }
 }*/
+
 
