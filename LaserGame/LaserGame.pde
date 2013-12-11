@@ -1,4 +1,8 @@
 import java.util.Collections;
+import ddf.minim.*;
+
+AudioPlayer player;
+Minim minim;  // pelin aani
 float rotx = PI/4;
 float roty = PI/4;
 Tile[][] frontTiles, backTiles, rightTiles, leftTiles, topTiles, bottomTiles;
@@ -94,18 +98,20 @@ void setup() {
   blockTile = backTiles[5][5];
   moveToTileNeighbor(base2Tile, Side.LEFT);
   moveToTileNeighbor(base1Tile, Side.RIGHT);
+  
+  minim = new Minim(this);
+  player = minim.loadFile("millionaire.mp3", 2048);
+  player.loop();
 }
 
 void draw() {
   background(0);
   noStroke(); // jotta sisällä oltavan pallon piirtoviivat eivät näy
 
-  //directionalLight(51, 102, 255, 0, 0, -100); // sininen yleisvalo
   directionalLight(0, 0, 0, 0, 0, -100); // musta yleisvalo
-  //pointLight(200, 200, 255, width/2, height/2, 150); // r g b -  x y z
   spotLight(200, 200, 255, width/2, height/2, 150, 0, 0, -1, PI, 1); // taustaa varten pointlight (r g b -  x y z mistä - xyz mihin - kulma - intensiteetti)
   spotLight(50, 50, 50, width/2, height/2, 150, 0, 0, -1, PI, 1); // palikkaa varten pointlight
-  spotLight(50, 50, 50, mouseX, mouseY, 600, 0, 0, -1, PI/2, 600);
+  spotLight(50, 50, 50, mouseX, mouseY, 600, 0, 0, -1, PI/2, 600); // hiiren mukana liikkuva pieni valonlahde
 
   translate(width/2.0, height/2.0, -100);
   sphere(400); // pallo, jonka sisällä ollaan (jotta taustalle piirtyy valoa)
@@ -149,6 +155,13 @@ void draw() {
     t.display(true);
   }
   //frontTiles[0][0].updateLaser(0);
+}
+
+void stop()
+{
+  player.close();
+  minim.stop();
+  super.stop();
 }
 
 void mouseDragged() {
