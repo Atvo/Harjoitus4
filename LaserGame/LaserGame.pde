@@ -13,6 +13,7 @@ Tile currentTile;
 int picked;
 int tmpCounter;
 
+
 void setup() {
   tmpCounter = 0;
   size(640, 360, P3D);
@@ -134,7 +135,7 @@ void draw() {
     else {
       fill(200);
     }
-    t.display(true);
+    t.display();
   }
   //frontTiles[0][0].updateLaser(0);
 }
@@ -612,7 +613,7 @@ void moveToTileNeighbor(Tile prev, Side fromSide) {
   moveToTileNeighbor(neighbor, toSide);
 }
 
-void moveToTileNeighbor(Tile tile, int side2Dto) {
+/*void moveToTileNeighbor(Tile tile, int side2Dto) {
   println("moveTo:  x: " + tile.squareX + "  y: " + tile.squareY + " to: " + side2Dto + "  side: " + tile.side);
   Tile [][] neiTiles = new Tile [cubeSize][cubeSize];
   boolean overEdge = false;
@@ -719,6 +720,6 @@ void removeAllLasers() {
       }
     }
   }
-}
+}*/
 
 
