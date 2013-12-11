@@ -1,7 +1,7 @@
 import java.awt.Polygon;
 class Tile implements Comparable {
   int x, y, z, size;
-  int cx, cy, cz;
+  float cx, cy, cz;
   int squareX, squareY;
   Vector3d a, b, c, d;
   Vector3d pa, pb, pc, pd;
@@ -37,23 +37,38 @@ class Tile implements Comparable {
       this.d = new Vector3d(x, y+size, z);
       this.cx = (x + size/2);
       this.cy = (y + size/2);
-      this.cz = z;
+      if (side == Side.FRONT){
+        this.cz = z+size/2.5;
+      }
+      else{
+        this.cz = z-size/2.5;
+      }
     }
     if (side == Side.RIGHT || side == Side.LEFT) {
       this.b = new Vector3d(x, y+size, z);
       this.c = new Vector3d(x, y+size, z+size);
       this.d = new Vector3d(x, y, z+size);
-      this.cx = x;
       this.cy = (y + size/2);
       this.cz = (z + size/2);
+      if (side == Side.RIGHT){
+        this.cx = x+size/2.5;
+      }
+      else{
+        this.cx = x-size/2.5;
+      }
     }
     if (side == Side.TOP || side == Side.BOTTOM) {
       this.b = new Vector3d(x+size, y, z);
       this.c = new Vector3d(x+size, y, z+size);
       this.d = new Vector3d(x, y, z+size);
       this.cx = (x + size/2);
-      this.cy = y;
       this.cz = (z + size/2);
+      if (side == Side.TOP){
+        this.cy = y - size/2.5;
+      }
+      else{
+        this.cy = y + size/2.5;
+      }
     }
     this.x = x;
     this.y = y;
@@ -128,7 +143,7 @@ class Tile implements Comparable {
     drawMyLasers2();
       //return;
     }
-      for (int i = 0; i<4 ; i++) {
+     /* for (int i = 0; i<4 ; i++) {
         if (lasers[i]) {
           int x2 = this.cx;
           int y2 = this.cy;
@@ -160,7 +175,7 @@ class Tile implements Comparable {
           strokeWeight(1);
         }
       
-    }
+    }*/
     //println("piirron loppu!");
 
     //drawMyLasers();
@@ -224,9 +239,9 @@ class Tile implements Comparable {
   }
 
   void drawMyLasers2() {
-    int x2 = cx;
-    int y2 = cy;
-    int z2 = cz;
+    float x2 = cx;
+    float y2 = cy;
+    float z2 = cz;
     if (this.side == Side.FRONT){
       //println(lasersMap);
     }
@@ -316,7 +331,7 @@ class Tile implements Comparable {
   }
 
 
-  void drawMyLasers() {
+  /*void drawMyLasers() {
     for (int i = 0; i<4 ; i++) {
       if (lasers[i]) {
         int x2 = this.cx;
@@ -349,7 +364,7 @@ class Tile implements Comparable {
         strokeWeight(1);
       }
     }
-  }
+  }*/
 
 
   void project() {
