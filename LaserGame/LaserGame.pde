@@ -126,7 +126,7 @@ void draw() {
     else {
       fill(200);
     }
-    t.display();
+    t.display(true);
   }
   //frontTiles[0][0].updateLaser(0);
 }
@@ -227,7 +227,7 @@ void checkCurrentTile() {
 //TOP, RIGHT, LEFT, FRONT, BACK, BOTTOM
 
 void moveToTileNeighbor(Tile tile, int side2Dto) {
-  println("moveTo:  " + side2Dto);
+  println("moveTo:  x: " + tile.squareX + "  y: " + tile.squareY + " to: " + side2Dto + "  side: " + tile.side);
   Tile [][] neiTiles = new Tile [cubeSize][cubeSize];
   boolean overEdge = false;
 
@@ -287,7 +287,7 @@ void moveToTileNeighbor(Tile tile, int side2Dto) {
 
         // Jos kaksi samaa kulmaa muutetaan naapurin listaa 
         if (l>1) {
-                             // println("naapuri löydetty i:" + i  + "  k: " + k + " squareY: " + tile.squareY);
+          println("naapuri löydetty x:" + i  + "  y: " + k + "  side: " + neiTiles[i][k].side);
 
           neiTiles[i][k].laserOn(neiTiles[i][k].getSide2D(tile.side));
           neiTiles[i][k].updateLaser(neiTiles[i][k].getSide2D(tile.side));
