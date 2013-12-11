@@ -29,9 +29,10 @@ void setup() {
   max = cubeSize*tileSize/2;
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
-      frontTiles[i][k] = new Tile(-max + i * tileSize, -max + k * tileSize, max, tileSize, Side.FRONT, i, k, this);
-      tiles[0][i][k] = new Tile(-max + i * tileSize, -max + k * tileSize, max, tileSize, Side.FRONT, i, k, this);
-      tiles2.add(new Tile(-max + i * tileSize, -max + k * tileSize, max, tileSize, Side.FRONT, i, k, this));
+      Tile tmpTile = new Tile(-max + i * tileSize, -max + k * tileSize, max, tileSize, Side.FRONT, i, k, this);
+      frontTiles[i][k] = tmpTile;
+      tiles[0][i][k] = tmpTile;
+      tiles2.add(tmpTile);
     }
   }
   println("hei: " + max);
