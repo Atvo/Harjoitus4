@@ -140,11 +140,8 @@ void mouseDragged() {
 }
 
 void mouseClicked() {
-<<<<<<< HEAD
-  removeAllLasers();
-=======
+  //removeAllLasers();
   tmpCounter = 0;
->>>>>>> 798467cd56b41189718c6e6316fae05e2a98158c
   println("Picked: " + picked);
   if (picked != -1) {
     Tile tmpTile = tiles2.get(picked);

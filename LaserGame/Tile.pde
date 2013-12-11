@@ -122,12 +122,10 @@ class Tile implements Comparable {
       vertex(c.x, c.y, c.z);
       vertex(d.x, d.y, d.z);
       endShape(CLOSE);
-<<<<<<< HEAD
-     
-=======
+
+
     drawMyLasers2();
-      return;
->>>>>>> 798467cd56b41189718c6e6316fae05e2a98158c
+      //return;
     }
       for (int i = 0; i<4 ; i++) {
         if (lasers[i]) {
