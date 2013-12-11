@@ -103,9 +103,9 @@ void draw() {
   //directionalLight(51, 102, 255, 0, 0, -100); // sininen yleisvalo
   directionalLight(0, 0, 0, 0, 0, -100); // musta yleisvalo
   //pointLight(200, 200, 255, width/2, height/2, 150); // r g b -  x y z
-  spotLight(200, 200, 255, width/2, height/2, 150, 0, 0, -1, PI, 2); // taustaa varten pointlight (r g b -  x y z mistä - xyz mihin - kulma - intensiteetti)
+  spotLight(200, 200, 255, width/2, height/2, 150, 0, 0, -1, PI, 1); // taustaa varten pointlight (r g b -  x y z mistä - xyz mihin - kulma - intensiteetti)
   spotLight(50, 50, 50, width/2, height/2, 150, 0, 0, -1, PI, 1); // palikkaa varten pointlight
-  spotLight(102, 153, 204, mouseX, mouseY, 600, 0, 0, -1, PI/2, 600);
+  spotLight(50, 50, 50, mouseX, mouseY, 600, 0, 0, -1, PI/2, 600);
 
   translate(width/2.0, height/2.0, -100);
   sphere(400); // pallo, jonka sisällä ollaan (jotta taustalle piirtyy valoa)
