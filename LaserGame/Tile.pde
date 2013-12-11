@@ -1,7 +1,7 @@
 import java.awt.Polygon;
 class Tile implements Comparable {
   int x, y, z, size;
-  int cx, cy, cz;
+  float cx, cy, cz;
   int squareX, squareY;
   Vector3d a, b, c, d;
   Vector3d pa, pb, pc, pd;
@@ -18,6 +18,7 @@ class Tile implements Comparable {
   // Onko ruudussa laserit päällä: 0 pohjoinen, 1 itä, 2 etelä, 3 länsi
   boolean [] lasers = new boolean[4];
   HashMap<Side, Boolean> lasersMap;
+  Mirror mirror;
 
   boolean isCurrentTile;
 
@@ -36,23 +37,38 @@ class Tile implements Comparable {
       this.d = new Vector3d(x, y+size, z);
       this.cx = (x + size/2);
       this.cy = (y + size/2);
-      this.cz = z;
+      if (side == Side.FRONT){
+        this.cz = z+size/2.5;
+      }
+      else{
+        this.cz = z-size/2.5;
+      }
     }
     if (side == Side.RIGHT || side == Side.LEFT) {
       this.b = new Vector3d(x, y+size, z);
       this.c = new Vector3d(x, y+size, z+size);
       this.d = new Vector3d(x, y, z+size);
-      this.cx = x;
       this.cy = (y + size/2);
       this.cz = (z + size/2);
+      if (side == Side.RIGHT){
+        this.cx = x+size/2.5;
+      }
+      else{
+        this.cx = x-size/2.5;
+      }
     }
     if (side == Side.TOP || side == Side.BOTTOM) {
       this.b = new Vector3d(x+size, y, z);
       this.c = new Vector3d(x+size, y, z+size);
       this.d = new Vector3d(x, y, z+size);
       this.cx = (x + size/2);
-      this.cy = y;
       this.cz = (z + size/2);
+      if (side == Side.TOP){
+        this.cy = y - size/2.5;
+      }
+      else{
+        this.cy = y + size/2.5;
+      }
     }
     this.x = x;
     this.y = y;
@@ -127,7 +143,7 @@ class Tile implements Comparable {
     drawMyLasers2();
       //return;
     }
-      for (int i = 0; i<4 ; i++) {
+     /* for (int i = 0; i<4 ; i++) {
         if (lasers[i]) {
           int x2 = this.cx;
           int y2 = this.cy;
@@ -159,7 +175,7 @@ class Tile implements Comparable {
           strokeWeight(1);
         }
       
-    }
+    }*/
     //println("piirron loppu!");
 
     //drawMyLasers();
@@ -214,18 +230,18 @@ class Tile implements Comparable {
 
   void updateLaser2(Side side) {
     if(this.side == Side.FRONT){
-      println("updating front tiles: " + side);
+      //println("updating front tiles: " + side);
     }
     lasersMap.put(side, true);
     if(this.side == Side.FRONT){
-    println("UPDATE: " + lasersMap);
+    //println("UPDATE: " + lasersMap);
     }
   }
 
   void drawMyLasers2() {
-    int x2 = cx;
-    int y2 = cy;
-    int z2 = cz;
+    float x2 = cx;
+    float y2 = cy;
+    float z2 = cz;
     if (this.side == Side.FRONT){
       //println(lasersMap);
     }
@@ -245,7 +261,7 @@ class Tile implements Comparable {
     }
     if (lasersMap.get(Side.RIGHT)) {
       if(this.side == Side.FRONT){
-        println("drawing front tiles from right: " + cx + cy + cz);
+        //println("drawing front tiles from right: " + cx + cy + cz);
       }
       //println("Drawning to Right: " + cx + cy + cz);
       x2 = cx;
@@ -274,7 +290,7 @@ class Tile implements Comparable {
     if (lasersMap.get(Side.LEFT)) {
       
       if(this.side == Side.FRONT){
-        println("drawing front tiles from left: " + cx + cy + cz);
+        //println("drawing front tiles from left: " + cx + cy + cz);
       }
       //println("DRAWING FROM LEFT");
       x2 = cx;
@@ -315,7 +331,7 @@ class Tile implements Comparable {
   }
 
 
-  void drawMyLasers() {
+  /*void drawMyLasers() {
     for (int i = 0; i<4 ; i++) {
       if (lasers[i]) {
         int x2 = this.cx;
@@ -348,7 +364,7 @@ class Tile implements Comparable {
         strokeWeight(1);
       }
     }
-  }
+  }*/
 
 
   void project() {
@@ -410,9 +426,15 @@ class Tile implements Comparable {
   }
 
   void allLasersOff() {
-    for (int i= 0; i<4; i++) {
+    /*for (int i= 0; i<4; i++) {
       lasers[i] = false;
-    }
+    }*/
+    lasersMap.put(Side.FRONT, false);
+    lasersMap.put(Side.RIGHT, false);
+    lasersMap.put(Side.BACK, false);
+    lasersMap.put(Side.LEFT, false);
+    lasersMap.put(Side.TOP, false);
+    lasersMap.put(Side.BOTTOM, false);
   }
 
   boolean hasVector(Vector3d v3) {
