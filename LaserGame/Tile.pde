@@ -105,23 +105,62 @@ class Tile implements Comparable {
     }
   }
 
-  public void display() {
-    fill(255);
-    /*MIIKA: otin pois, koska bugittaa valojen kanssa (testaa, ihan makee tietty jos käyttää oikein ja vaikka kaikille sivuille)
-     if (side == side.FRONT) {
-     fill(255, 0, 0);
-     }
-     */
-    if (isCurrentTile) {
-      fill(0, 0, 255);
-    }
-    beginShape();
-    vertex(a.x, a.y, a.z);
-    vertex(b.x, b.y, b.z);
-    vertex(c.x, c.y, c.z);
-    vertex(d.x, d.y, d.z);
-    endShape(CLOSE);
+  public void display(boolean onlyShape) {
+    if (onlyShape) {
+      fill(255);
+      /*MIIKA: otin pois, koska bugittaa valojen kanssa (testaa, ihan makee tietty jos käyttää oikein ja vaikka kaikille sivuille)
+       if (side == side.FRONT) {
+       fill(255, 0, 0);
+       }
+       */
+      if (isCurrentTile) {
+        fill(0, 0, 255);
+      }
+      beginShape();
+      vertex(a.x, a.y, a.z);
+      vertex(b.x, b.y, b.z);
+      vertex(c.x, c.y, c.z);
+      vertex(d.x, d.y, d.z);
+      endShape(CLOSE);
     drawMyLasers2();
+      return;
+    }
+    else {
+      for (int i = 0; i<4 ; i++) {
+        if (lasers[i]) {
+          int x2 = this.cx;
+          int y2 = this.cy;
+          int z2 = this.cz;
+          if (sides2D[i] == Side.RIGHT) {
+            x2 = cx+(this.size/2);
+          }
+          else if (sides2D[i] == Side.LEFT) {
+            x2 = cx-(this.size/2);
+          }
+          else if (sides2D[i] == Side.TOP) {
+            y2 = cx-(this.size/2);
+          }
+          else if (sides2D[i] == Side.BOTTOM) {
+            y2 = cx+(this.size/2);
+          }
+          else if (sides2D[i] == Side.FRONT) {
+            y2 = cx+(this.size/2);
+          }
+          else if (sides2D[i] == Side.BACK) {
+            y2 = cx-(this.size/2);
+          }    
+          println("drawing in " + this.side + " x: " + this.squareX + "  y: " + this.squareY + "  suunta2D: " + i);
+          strokeWeight(5);
+          stroke(0, 255, 0);
+          //println("cx: " + this.cx + ", cy: " +  this.cy + ", cz: " + this.cz + ", x2: " + x2 + ", y2: " + y2 + ", z2: " + z2);
+          line(this.cx, this.cy, this.cz, x2, y2, z2);
+          stroke(100);
+          strokeWeight(1);
+        }
+      }
+    }
+    println("piirron loppu!");
+
     //drawMyLasers();
     /*if (side == Side.FRONT || side == Side.BACK) {
      beginShape();
@@ -168,7 +207,7 @@ class Tile implements Comparable {
       lahtosuunta2D = 1;
     }
     this.lasers[lahtosuunta2D] = true;
-    drawMyLasers();
+    display(false);
     this.laserGame.moveToTileNeighbor(this, lahtosuunta2D);
   }
 
