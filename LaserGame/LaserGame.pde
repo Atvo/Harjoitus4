@@ -138,6 +138,7 @@ void mouseDragged() {
 }
 
 void mouseClicked() {
+  removeAllLasers();
   println("Picked: " + picked);
   if (picked != -1) {
     Tile tmpTile = tiles2.get(picked);
@@ -291,7 +292,6 @@ void moveToTileNeighbor(Tile tile, int side2Dto) {
 
           neiTiles[i][k].laserOn(neiTiles[i][k].getSide2D(tile.side));
           neiTiles[i][k].updateLaser(neiTiles[i][k].getSide2D(tile.side));
-
         }
       }
     }
@@ -321,4 +321,15 @@ void moveToTileNeighbor(Tile tile, int side2Dto) {
   }
   //println("ERROR LaserGame CheckNeighbourg: side:  " + side2Dto );
 }
+
+void removeAllLasers() {
+  for (int i = 0; i < 6; i++) {
+    for (int j = 0; j < cubeSize; j++) {
+      for (int k = 0; k < cubeSize; k++) {
+        tiles[i][j][k].allLasersOff();
+      }
+    }
+  }
+}
+
 

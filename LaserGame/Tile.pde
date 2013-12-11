@@ -114,9 +114,8 @@ class Tile implements Comparable {
       vertex(c.x, c.y, c.z);
       vertex(d.x, d.y, d.z);
       endShape(CLOSE);
-      return;
+     
     }
-    else {
       for (int i = 0; i<4 ; i++) {
         if (lasers[i]) {
           int x2 = this.cx;
@@ -140,17 +139,17 @@ class Tile implements Comparable {
           else if (sides2D[i] == Side.BACK) {
             y2 = cx-(this.size/2);
           }    
-          println("drawing in " + this.side + " x: " + this.squareX + "  y: " + this.squareY + "  suunta2D: " + i);
+          println("drawing in " + this.side + " x: " + this.squareX + "  y: " + this.squareY + "  suunta2D: " + i + " suunta3D: " + this.get3DSide(i));
           strokeWeight(5);
           stroke(0, 255, 0);
-          //println("cx: " + this.cx + ", cy: " +  this.cy + ", cz: " + this.cz + ", x2: " + x2 + ", y2: " + y2 + ", z2: " + z2);
+          println("cx: " + this.cx + ", cy: " +  this.cy + ", cz: " + this.cz + ", x2: " + x2 + ", y2: " + y2 + ", z2: " + z2);
           line(this.cx, this.cy, this.cz, x2, y2, z2);
           stroke(100);
           strokeWeight(1);
         }
-      }
+      
     }
-    println("piirron loppu!");
+    //println("piirron loppu!");
 
     //drawMyLasers();
     /*if (side == Side.FRONT || side == Side.BACK) {
@@ -264,7 +263,7 @@ class Tile implements Comparable {
     lasers[side2D] = true;
   }
 
-  void allLasersOff(int side2D) {
+  void allLasersOff() {
     for (int i= 0; i<4; i++) {
       lasers[i] = false;
     }
