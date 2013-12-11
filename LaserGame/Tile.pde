@@ -18,6 +18,7 @@ class Tile implements Comparable {
   // Onko ruudussa laserit päällä: 0 pohjoinen, 1 itä, 2 etelä, 3 länsi
   boolean [] lasers = new boolean[4];
   HashMap<Side, Boolean> lasersMap;
+  Mirror mirror;
 
   boolean isCurrentTile;
 
@@ -214,11 +215,11 @@ class Tile implements Comparable {
 
   void updateLaser2(Side side) {
     if(this.side == Side.FRONT){
-      println("updating front tiles: " + side);
+      //println("updating front tiles: " + side);
     }
     lasersMap.put(side, true);
     if(this.side == Side.FRONT){
-    println("UPDATE: " + lasersMap);
+    //println("UPDATE: " + lasersMap);
     }
   }
 
@@ -245,7 +246,7 @@ class Tile implements Comparable {
     }
     if (lasersMap.get(Side.RIGHT)) {
       if(this.side == Side.FRONT){
-        println("drawing front tiles from right: " + cx + cy + cz);
+        //println("drawing front tiles from right: " + cx + cy + cz);
       }
       //println("Drawning to Right: " + cx + cy + cz);
       x2 = cx;
@@ -274,7 +275,7 @@ class Tile implements Comparable {
     if (lasersMap.get(Side.LEFT)) {
       
       if(this.side == Side.FRONT){
-        println("drawing front tiles from left: " + cx + cy + cz);
+        //println("drawing front tiles from left: " + cx + cy + cz);
       }
       //println("DRAWING FROM LEFT");
       x2 = cx;
@@ -410,9 +411,15 @@ class Tile implements Comparable {
   }
 
   void allLasersOff() {
-    for (int i= 0; i<4; i++) {
+    /*for (int i= 0; i<4; i++) {
       lasers[i] = false;
-    }
+    }*/
+    lasersMap.put(Side.FRONT, false);
+    lasersMap.put(Side.RIGHT, false);
+    lasersMap.put(Side.BACK, false);
+    lasersMap.put(Side.LEFT, false);
+    lasersMap.put(Side.TOP, false);
+    lasersMap.put(Side.BOTTOM, false);
   }
 
   boolean hasVector(Vector3d v3) {
