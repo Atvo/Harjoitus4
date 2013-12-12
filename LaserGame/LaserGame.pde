@@ -154,6 +154,9 @@ void draw() {
     if (i == picked) {
       fill(#ff8080);
       t.isCurrentTile = true;
+      if(t.content == TileContent.EMPTY){
+        t.mirror.leftOrRight = rightOrLeftMirror;
+      }
     }
     else {
       fill(200);
@@ -195,7 +198,7 @@ void mouseClicked() {
     //tmpTile.updateLaser2(Side.LEFT);
     if (tmpTile.content == TileContent.EMPTY && !player1Won && !player2Won) {
       removeAllLasers();
-      tmpTile.mirror = new Mirror(rightOrLeftMirror, tmpTile.side);
+      tmpTile.mirror.leftOrRight = rightOrLeftMirror;
       tmpTile.content = TileContent.MIRROR;
       player1Turn = (player1Turn) ? false : true;
       moveToTileNeighbor(base2Tile, Side.LEFT);
@@ -292,14 +295,14 @@ void moveToTileNeighbor(Tile prev, Side fromSide) {
   boolean overEdge = false;
   Side toSide = fromSide;
   //println("fromsIde: " + fromSide);
-  if (prev.mirror != null) {
+  if (prev.content == TileContent.MIRROR) {
     toSide = prev.mirror.changeLaserDirection(fromSide);
   }
   if (prev.mirror != null) {
     //fromSide = prev.mirror.changeLaserDirection(fromSide);
   }
   prev.updateLaser2(fromSide);
-  if (prev.mirror != null) {
+  if (prev.content == TileContent.MIRROR) {
     fromSide = prev.mirror.changeLaserDirection(fromSide);
   }
   if (prev.side == Side.FRONT) {

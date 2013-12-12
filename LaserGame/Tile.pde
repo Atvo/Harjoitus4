@@ -25,6 +25,7 @@ class Tile implements Comparable {
 
   Tile(int x, int y, int z, int size, Side side, int squareX, int squareY, LaserGame laserGame) {
     this.a = new Vector3d(x, y, z);
+    this.mirror = new Mirror(true, side);
     lasersMap = new HashMap <Side, Boolean>();
     lasersMap.put(Side.FRONT, false);
     lasersMap.put(Side.RIGHT, false);
@@ -150,48 +151,68 @@ class Tile implements Comparable {
       if (content == TileContent.PLAYER2BASE) {
         //TODO: PIIRRÄ BASE
       }
-      fill(0, 0, 0);
+      fill(255);
+      stroke(255);
       beginShape();
-
-
-      if (content == TileContent.MIRROR) {
+      stroke(0);
+      if (content == TileContent.MIRROR || isCurrentTile) {
+        float x1,y1,z1,x2,y2,z2;
+      if(!mirror.leftOrRight){
+      x1 = a.x;
+      y1 = a.y;
+      z1 = a.z;
+      x2 = c.x;
+      y2 = c.y;
+      z2 = c.z;
+      }
+      else {
+      x1 = b.x;
+      y1 = b.y;
+      z1 = b.z;
+      x2 = d.x;
+      y2 = d.y;
+      z2 = d.z;
+      }
+      
         if (side == Side.FRONT) {
-          vertex(a.x+1, a.y+1, a.z);
-          vertex(c.x -1, c.y-1, c.z);  
-          vertex(c.x -1, c.y -1, c.z+20);
-          vertex(a.x+1, a.y +1, a.z+20);
+          vertex(x1+1, y1+1, z1);
+          vertex(x2 -1, y2-1, z2);  
+          vertex(x2 -1, y2 -1, z2+20);
+          vertex(x1+1, y1 +1, z1+20);
         } 
         else if (side == Side.BACK) {
-          vertex(a.x+1, a.y+1, a.z);
-          vertex(c.x -1, c.y-1, c.z);  
-          vertex(c.x -1, c.y -1, c.z-20);
-          vertex(a.x+1, a.y +1, a.z-20);
+          vertex(x1+1, y1+1, z1);
+          vertex(x2 -1, y2-1, z2);  
+          vertex(x2 -1, y2 -1, z2-20);
+          vertex(x1+1, y1 +1, z1-20);
         }
+
         else if (side == Side.LEFT) {
-          vertex(a.x+1, a.y, a.z+1);
-          vertex(c.x -1, c.y, c.z-1);  
-          vertex(c.x -20, c.y-1, c.z-1);
-          vertex(a.x-20, a.y+1, a.z+1);
+          vertex(x1+1, y1, z1+1);
+          vertex(x2 -1, y2, z2-1);  
+          vertex(x2 -20, y2-1, z2-1);
+          vertex(x1-20, y1+1, z1+1);
         }
         else if (side == Side.RIGHT) {
-          vertex(a.x+1, a.y, a.z+1);
-          vertex(c.x -1, c.y, c.z-1);  
-          vertex(c.x +20, c.y -1, c.z-1);
-          vertex(a.x+20, a.y +1, a.z+1);
+          vertex(x1+1, y1, z1+1);
+          vertex(x2 -1, y2, z2-1);  
+          vertex(x2 +20, y2 -1, z2-1);
+          vertex(x1+20, y1 +1, z1+1);
         }
         else if (side == Side.TOP) {
-          vertex(a.x, a.y+1, a.z+1);
-          vertex(c.x, c.y-1, c.z-1);  
-          vertex(c.x -1, c.y -20, c.z-1);
-          vertex(a.x +1, a.y -20, a.z+1);
+          vertex(x1, y1+1, z1+1);
+          vertex(x2, y2-1, z2-1);  
+          vertex(x2 -1, y2 -20, z2-1);
+          vertex(x1 +1, y1 -20, z1+1);
         }
         else if (side == Side.BOTTOM) {
-          vertex(a.x, a.y+1, a.z+1);
-          vertex(c.x, c.y-1, c.z-1);  
-          vertex(c.x -1, c.y +20, c.z-1);
-          vertex(a.x +1, a.y +20, a.z+1);
+          vertex(x1, y1+1, z1+1);
+          vertex(x2, y2-1, z2-1);  
+          vertex(x2 -1, y2 +20, z2-1);
+          vertex(x1 +1, y1 +20, z1+1);
         }
         endShape(CLOSE);
+        fill(0,0,0);
       }
       //return;
     }
