@@ -5,7 +5,6 @@ class Mirror {
   public Mirror(boolean leftOrRight, Side side) {
     this.leftOrRight = leftOrRight;
     this.side = side;
-    println("Mirror Created");
   }
 
   Side changeLaserDirection(Side from) {

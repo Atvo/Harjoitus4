@@ -127,6 +127,7 @@ class Tile implements Comparable {
   public void display(boolean onlyShape) {
     if (onlyShape) {
       fill(255);
+      //noFill();
       /*MIIKA: otin pois, koska bugittaa valojen kanssa (testaa, ihan makee tietty jos käyttää oikein ja vaikka kaikille sivuille)
        if (side == side.FRONT) {
        fill(255, 0, 0);
@@ -141,39 +142,114 @@ class Tile implements Comparable {
       vertex(c.x, c.y, c.z);
       vertex(d.x, d.y, d.z);
       endShape(CLOSE);
-      drawMyLasers2();
-      if (content == TileContent.BLOCK) {
-        //TODO: PIIRRÄ BLOCKKI
-      }
-      if (content == TileContent.PLAYER1BASE) {
-        //TODO: PIIRRÄ BASE
-      }
-      if (content == TileContent.PLAYER2BASE) {
-        //TODO: PIIRRÄ BASE
-      }
+
       fill(255);
       stroke(255);
       beginShape();
       stroke(0);
+      drawMyLasers2();
+      if (content == TileContent.BLOCK || content == TileContent.PLAYER1BASE || content == TileContent.PLAYER2BASE) {
+        float xAup, yAup, zAup, xBup, yBup, zBup, xCup, yCup, zCup, xDup, yDup, zDup;
+        float up = 20;
+        xAup = a.x;
+        yAup = a.y;
+        zAup = a.z;
+        xBup = b.x;
+        yBup = b.y;
+        zBup = b.z;
+        xCup = c.x;
+        yCup = c.y;
+        zCup = c.z;  
+        xDup = d.x;
+        yDup = d.y;
+        zDup = d.z;         
+
+        if (side == Side.BACK || side == Side.LEFT || side == Side.TOP) {
+          up = -20;
+        } 
+        if (side == Side.BACK || side == Side.FRONT) {
+          zAup = a.z +up;
+          zBup = b.z +up;
+          zCup = c.z +up;  
+          zDup = d.z +up;
+        }
+
+        else if (side == Side.LEFT || side == Side.RIGHT) {
+          xAup = a.x +up;
+          xBup = b.x +up;
+          xCup = c.x +up;  
+          xDup = d.x +up;
+        }
+        else if (side == Side.BOTTOM || side == Side.TOP) {
+          yAup = a.y +up;
+          yBup = b.y +up;
+          yCup = c.y +up;  
+          yDup = d.y +up;
+        }
+        if (content == TileContent.PLAYER1BASE) {
+          // texture SAARA
+        }
+        else if (content == TileContent.PLAYER2BASE) {
+          // texture SAARA
+        }
+        else if (content == TileContent.BLOCK ) {
+          // texture SAARA
+        }
+        fill(0);
+        vertex(a.x, a.y, a.z);
+        vertex(b.x, b.y, b.z);
+        vertex(xBup, yBup, zBup);
+        vertex(xAup, yAup, zAup);
+        endShape(CLOSE);
+        beginShape();
+        vertex(b.x, b.y, b.z);
+        vertex(c.x, c.y, c.z);
+        vertex(xCup, yCup, zCup);
+        vertex(xBup, yBup, zBup);
+        endShape(CLOSE);
+        beginShape();
+        vertex(c.x, c.y, c.z);
+        vertex(d.x, d.y, d.z);
+        vertex(xDup, yDup, zDup);
+        vertex(xCup, yCup, zCup);
+        endShape(CLOSE);
+        beginShape();
+        vertex(a.x, a.y, a.z);
+        vertex(d.x, d.y, d.z);
+        vertex(xDup, yDup, zDup);
+        vertex(xAup, yAup, zAup);
+        endShape(CLOSE);
+        beginShape();
+        vertex(xAup, yAup, zAup); 
+        vertex(xBup, yBup, zBup);
+        vertex(xCup, yCup, zCup);
+        vertex(xDup, yDup, zDup);  
+        endShape(CLOSE);
+      }
+
       if (content == TileContent.MIRROR || isCurrentTile) {
-        float x1,y1,z1,x2,y2,z2;
-      if(!mirror.leftOrRight){
-      x1 = a.x;
-      y1 = a.y;
-      z1 = a.z;
-      x2 = c.x;
-      y2 = c.y;
-      z2 = c.z;
-      }
-      else {
-      x1 = b.x;
-      y1 = b.y;
-      z1 = b.z;
-      x2 = d.x;
-      y2 = d.y;
-      z2 = d.z;
-      }
-      
+        float x1, y1, z1, x2, y2, z2;
+        if (!mirror.leftOrRight) {
+          x1 = a.x;
+          y1 = a.y;
+          z1 = a.z;
+          x2 = c.x;
+          y2 = c.y;
+          z2 = c.z;
+        }
+        else {
+          x1 = b.x;
+          y1 = b.y;
+          z1 = b.z;
+          x2 = d.x;
+          y2 = d.y;
+          z2 = d.z;
+        }
+        
+      fill(255);
+      stroke(255);
+      beginShape();
+      stroke(0);
         if (side == Side.FRONT) {
           vertex(x1+1, y1+1, z1);
           vertex(x2 -1, y2-1, z2);  
@@ -212,7 +288,7 @@ class Tile implements Comparable {
           vertex(x1 +1, y1 +20, z1+1);
         }
         endShape(CLOSE);
-        fill(0,0,0);
+        fill(0, 0, 0);
       }
       //return;
     }
