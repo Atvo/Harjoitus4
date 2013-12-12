@@ -1,0 +1,3 @@
+public enum TileContent {
+  EMPTY, BLOCK, PLAYER1BASE, PLAYER2BASE, MIRROR
+}
