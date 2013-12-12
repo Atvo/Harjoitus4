@@ -18,6 +18,7 @@ Tile currentTile;
 int picked;
 int tmpCounter;
 boolean player1Won, player2Won;
+boolean player1Turn;
 boolean rightOrLeftMirror;
 
 void setup() {
@@ -36,6 +37,7 @@ void setup() {
   max = cubeSize*tileSize/2;
   player1Won = false;
   player2Won = false;
+  player1Turn = true;
   rightOrLeftMirror = true;
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
@@ -104,7 +106,7 @@ void setup() {
   moveToTileNeighbor(base1Tile, Side.RIGHT);
 
   minim = new Minim(this);
-  player = minim.loadFile("data/millionaire.mp3", 2048);
+  player = minim.loadFile("millionaire.mp3", 2048);
   player.loop();
 }
 
@@ -179,12 +181,13 @@ void mouseClicked() {
   tmpCounter = 0;
   println("Picked: " + picked);
   if (mouseButton == RIGHT) {
-    if (rightOrLeftMirror) {
+    rightOrLeftMirror = (rightOrLeftMirror) ? false : true;
+    /*if (rightOrLeftMirror) {
       rightOrLeftMirror = false;
     }
     else {
       rightOrLeftMirror = true;
-    }
+    }*/
   }
   else if (picked != -1) {
     Tile tmpTile = tiles2.get(picked);
@@ -194,6 +197,7 @@ void mouseClicked() {
       removeAllLasers();
       tmpTile.mirror = new Mirror(rightOrLeftMirror, tmpTile.side);
       tmpTile.content = TileContent.MIRROR;
+      player1Turn = (player1Turn) ? false : true;
       moveToTileNeighbor(base2Tile, Side.LEFT);
       moveToTileNeighbor(base1Tile, Side.RIGHT);
     }
