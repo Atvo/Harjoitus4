@@ -38,10 +38,10 @@ class Tile implements Comparable {
       this.d = new Vector3d(x, y+size, z);
       this.cx = (x + size/2);
       this.cy = (y + size/2);
-      if (side == Side.FRONT){
+      if (side == Side.FRONT) {
         this.cz = z+size/2.5;
       }
-      else{
+      else {
         this.cz = z-size/2.5;
       }
     }
@@ -51,10 +51,10 @@ class Tile implements Comparable {
       this.d = new Vector3d(x, y, z+size);
       this.cy = (y + size/2);
       this.cz = (z + size/2);
-      if (side == Side.RIGHT){
+      if (side == Side.RIGHT) {
         this.cx = x+size/2.5;
       }
-      else{
+      else {
         this.cx = x-size/2.5;
       }
     }
@@ -64,10 +64,10 @@ class Tile implements Comparable {
       this.d = new Vector3d(x, y, z+size);
       this.cx = (x + size/2);
       this.cz = (z + size/2);
-      if (side == Side.TOP){
+      if (side == Side.TOP) {
         this.cy = y - size/2.5;
       }
-      else{
+      else {
         this.cy = y + size/2.5;
       }
     }
@@ -141,53 +141,70 @@ class Tile implements Comparable {
       vertex(d.x, d.y, d.z);
       endShape(CLOSE);
       drawMyLasers2();
-      if (content == TileContent.BLOCK){
+      if (content == TileContent.BLOCK) {
         //TODO: PIIRRÄ BLOCKKI
       }
-      if (content == TileContent.PLAYER1BASE){
+      if (content == TileContent.PLAYER1BASE) {
         //TODO: PIIRRÄ BASE
       }
-      if (content == TileContent.PLAYER2BASE){
+      if (content == TileContent.PLAYER2BASE) {
         //TODO: PIIRRÄ BASE
       }
-      if (content == TileContent.MIRROR){
-        //TODO: PIIRRÄ PEILI
+      if (content == TileContent.MIRROR) {
+        if (side == Side.FRONT) {
+            beginShape();
+            vertex(a.x, a.y, a.z);
+            vertex(c.x, c.y, b.z);
+            vertex(c.x, c.y, c.z);
+            vertex(d.x, d.y, d.z);
+            endShape(CLOSE);
+        } 
+        else if (side == Side.BACK) {
+        }
+        else if (side == Side.LEFT) {
+        }
+        else if (side == Side.RIGHT) {
+        }
+        else if (side == Side.TOP) {
+        }
+        else if (side == Side.BOTTOM) {
+        }
       }
       //return;
     }
-     /* for (int i = 0; i<4 ; i++) {
-        if (lasers[i]) {
-          int x2 = this.cx;
-          int y2 = this.cy;
-          int z2 = this.cz;
-          if (sides2D[i] == Side.RIGHT) {
-            x2 = cx+(this.size/2);
-          }
-          else if (sides2D[i] == Side.LEFT) {
-            x2 = cx-(this.size/2);
-          }
-          else if (sides2D[i] == Side.TOP) {
-            y2 = cx-(this.size/2);
-          }
-          else if (sides2D[i] == Side.BOTTOM) {
-            y2 = cx+(this.size/2);
-          }
-          else if (sides2D[i] == Side.FRONT) {
-            y2 = cx+(this.size/2);
-          }
-          else if (sides2D[i] == Side.BACK) {
-            y2 = cx-(this.size/2);
-          }    
-          println("drawing in " + this.side + " x: " + this.squareX + "  y: " + this.squareY + "  suunta2D: " + i + " suunta3D: " + this.get3DSide(i));
-          strokeWeight(5);
-          stroke(0, 255, 0);
-          println("cx: " + this.cx + ", cy: " +  this.cy + ", cz: " + this.cz + ", x2: " + x2 + ", y2: " + y2 + ", z2: " + z2);
-          line(this.cx, this.cy, this.cz, x2, y2, z2);
-          stroke(100);
-          strokeWeight(1);
-        }
-      
-    }*/
+    /* for (int i = 0; i<4 ; i++) {
+     if (lasers[i]) {
+     int x2 = this.cx;
+     int y2 = this.cy;
+     int z2 = this.cz;
+     if (sides2D[i] == Side.RIGHT) {
+     x2 = cx+(this.size/2);
+     }
+     else if (sides2D[i] == Side.LEFT) {
+     x2 = cx-(this.size/2);
+     }
+     else if (sides2D[i] == Side.TOP) {
+     y2 = cx-(this.size/2);
+     }
+     else if (sides2D[i] == Side.BOTTOM) {
+     y2 = cx+(this.size/2);
+     }
+     else if (sides2D[i] == Side.FRONT) {
+     y2 = cx+(this.size/2);
+     }
+     else if (sides2D[i] == Side.BACK) {
+     y2 = cx-(this.size/2);
+     }    
+     println("drawing in " + this.side + " x: " + this.squareX + "  y: " + this.squareY + "  suunta2D: " + i + " suunta3D: " + this.get3DSide(i));
+     strokeWeight(5);
+     stroke(0, 255, 0);
+     println("cx: " + this.cx + ", cy: " +  this.cy + ", cz: " + this.cz + ", x2: " + x2 + ", y2: " + y2 + ", z2: " + z2);
+     line(this.cx, this.cy, this.cz, x2, y2, z2);
+     stroke(100);
+     strokeWeight(1);
+     }
+     
+     }*/
     //println("piirron loppu!");
 
     //drawMyLasers();
@@ -241,12 +258,12 @@ class Tile implements Comparable {
   }
 
   void updateLaser2(Side side) {
-    if(this.side == Side.FRONT){
+    if (this.side == Side.FRONT) {
       //println("updating front tiles: " + side);
     }
     lasersMap.put(side, true);
-    if(this.side == Side.FRONT){
-    //println("UPDATE: " + lasersMap);
+    if (this.side == Side.FRONT) {
+      //println("UPDATE: " + lasersMap);
     }
   }
   //TODO: LASER HIENOMMAKSI. KÄYTÄ VAIKKA NIITÄ RIBBONEITA JA PIENIÄ PARTIKKELEITA
@@ -254,10 +271,10 @@ class Tile implements Comparable {
     float x2 = cx;
     float y2 = cy;
     float z2 = cz;
-    if (this.side == Side.FRONT){
+    if (this.side == Side.FRONT) {
       //println(lasersMap);
     }
-    
+
     if (lasersMap.get(Side.FRONT)) {
       x2 = cx;
       y2 = cy;
@@ -272,7 +289,7 @@ class Tile implements Comparable {
       strokeWeight(1);
     }
     if (lasersMap.get(Side.RIGHT)) {
-      if(this.side == Side.FRONT){
+      if (this.side == Side.FRONT) {
         //println("drawing front tiles from right: " + cx + cy + cz);
       }
       //println("Drawning to Right: " + cx + cy + cz);
@@ -300,8 +317,8 @@ class Tile implements Comparable {
       strokeWeight(1);
     }
     if (lasersMap.get(Side.LEFT)) {
-      
-      if(this.side == Side.FRONT){
+
+      if (this.side == Side.FRONT) {
         //println("drawing front tiles from left: " + cx + cy + cz);
       }
       //println("DRAWING FROM LEFT");
@@ -344,39 +361,39 @@ class Tile implements Comparable {
 
 
   /*void drawMyLasers() {
-    for (int i = 0; i<4 ; i++) {
-      if (lasers[i]) {
-        int x2 = this.cx;
-        int y2 = this.cy;
-        int z2 = this.cz;
-        if (sides2D[i] == Side.RIGHT) {
-          x2 = cx+(this.size/2);
-        }
-        else if (sides2D[i] == Side.LEFT) {
-          x2 = cx-(this.size/2);
-        }
-        else if (sides2D[i] == Side.TOP) {
-          y2 = cx-(this.size/2);
-        }
-        else if (sides2D[i] == Side.BOTTOM) {
-          y2 = cx+(this.size/2);
-        }
-        else if (sides2D[i] == Side.FRONT) {
-          y2 = cx+(this.size/2);
-        }
-        else if (sides2D[i] == Side.BACK) {
-          y2 = cx-(this.size/2);
-        }    
-        println("drawing in " + this.side + " x: " + this.squareX + "  y: " + this.squareY + "  suunta2D: " + i);
-        strokeWeight(5);
-        stroke(0, 255, 0);
-        //println("cx: " + this.cx + ", cy: " +  this.cy + ", cz: " + this.cz + ", x2: " + x2 + ", y2: " + y2 + ", z2: " + z2);
-        line(this.cx, this.cy, this.cz, x2, y2, z2);
-        stroke(100);
-        strokeWeight(1);
-      }
-    }
-  }*/
+   for (int i = 0; i<4 ; i++) {
+   if (lasers[i]) {
+   int x2 = this.cx;
+   int y2 = this.cy;
+   int z2 = this.cz;
+   if (sides2D[i] == Side.RIGHT) {
+   x2 = cx+(this.size/2);
+   }
+   else if (sides2D[i] == Side.LEFT) {
+   x2 = cx-(this.size/2);
+   }
+   else if (sides2D[i] == Side.TOP) {
+   y2 = cx-(this.size/2);
+   }
+   else if (sides2D[i] == Side.BOTTOM) {
+   y2 = cx+(this.size/2);
+   }
+   else if (sides2D[i] == Side.FRONT) {
+   y2 = cx+(this.size/2);
+   }
+   else if (sides2D[i] == Side.BACK) {
+   y2 = cx-(this.size/2);
+   }    
+   println("drawing in " + this.side + " x: " + this.squareX + "  y: " + this.squareY + "  suunta2D: " + i);
+   strokeWeight(5);
+   stroke(0, 255, 0);
+   //println("cx: " + this.cx + ", cy: " +  this.cy + ", cz: " + this.cz + ", x2: " + x2 + ", y2: " + y2 + ", z2: " + z2);
+   line(this.cx, this.cy, this.cz, x2, y2, z2);
+   stroke(100);
+   strokeWeight(1);
+   }
+   }
+   }*/
 
 
   void project() {
@@ -439,8 +456,8 @@ class Tile implements Comparable {
 
   void allLasersOff() {
     /*for (int i= 0; i<4; i++) {
-      lasers[i] = false;
-    }*/
+     lasers[i] = false;
+     }*/
     lasersMap.put(Side.FRONT, false);
     lasersMap.put(Side.RIGHT, false);
     lasersMap.put(Side.BACK, false);
