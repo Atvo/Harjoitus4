@@ -150,25 +150,48 @@ class Tile implements Comparable {
       if (content == TileContent.PLAYER2BASE) {
         //TODO: PIIRRÄ BASE
       }
+      fill(0, 0, 0);
+      beginShape();
+
+
       if (content == TileContent.MIRROR) {
         if (side == Side.FRONT) {
-            beginShape();
-            vertex(a.x, a.y, a.z);
-            vertex(c.x, c.y, b.z);
-            vertex(c.x, c.y, c.z);
-            vertex(d.x, d.y, d.z);
-            endShape(CLOSE);
+          vertex(a.x+1, a.y+1, a.z);
+          vertex(c.x -1, c.y-1, c.z);  
+          vertex(c.x -1, c.y -1, c.z+20);
+          vertex(a.x+1, a.y +1, a.z+20);
         } 
         else if (side == Side.BACK) {
+          vertex(a.x+1, a.y+1, a.z);
+          vertex(c.x -1, c.y-1, c.z);  
+          vertex(c.x -1, c.y -1, c.z-20);
+          vertex(a.x+1, a.y +1, a.z-20);
         }
         else if (side == Side.LEFT) {
+          vertex(a.x+1, a.y, a.z+1);
+          vertex(c.x -1, c.y, c.z-1);  
+          vertex(c.x -20, c.y-1, c.z-1);
+          vertex(a.x-20, a.y+1, a.z+1);
         }
         else if (side == Side.RIGHT) {
+          vertex(a.x+1, a.y, a.z+1);
+          vertex(c.x -1, c.y, c.z-1);  
+          vertex(c.x +20, c.y -1, c.z-1);
+          vertex(a.x+20, a.y +1, a.z+1);
         }
         else if (side == Side.TOP) {
+          vertex(a.x, a.y+1, a.z+1);
+          vertex(c.x, c.y-1, c.z-1);  
+          vertex(c.x -1, c.y -20, c.z-1);
+          vertex(a.x +1, a.y -20, a.z+1);
         }
         else if (side == Side.BOTTOM) {
+          vertex(a.x, a.y+1, a.z+1);
+          vertex(c.x, c.y-1, c.z-1);  
+          vertex(c.x -1, c.y +20, c.z-1);
+          vertex(a.x +1, a.y +20, a.z+1);
         }
+        endShape(CLOSE);
       }
       //return;
     }
