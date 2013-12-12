@@ -104,7 +104,7 @@ void setup() {
   moveToTileNeighbor(base1Tile, Side.RIGHT);
 
   minim = new Minim(this);
-  player = minim.loadFile("millionaire.mp3", 2048);
+  player = minim.loadFile("data/millionaire.mp3", 2048);
   player.loop();
 }
 
