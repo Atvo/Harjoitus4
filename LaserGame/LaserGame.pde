@@ -45,9 +45,7 @@ void setup() {
       tiles2.add(tmpTile);
     }
   }
-  println("hei: " + max);
   this.front = new Square(Side.FRONT, -max, -max, max, -max, max, max, max, -max, max, max, max, max);
-  println("hei2");
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
       Tile tmpTile = new Tile(-max + i * tileSize, -max + k * tileSize, -max, tileSize, Side.BACK, i, k, this);
@@ -94,11 +92,17 @@ void setup() {
   }
   bottom = new Square(Side.TOP, -max, -max, -max, -max, -max, max, max, -max, -max, max, -max, max);
   base1Tile = frontTiles[4][5];
+  base1Tile.content = TileContent.PLAYER1BASE;
   base2Tile = frontTiles[5][5];
-  blockTile = backTiles[5][5];
+  base2Tile.content = TileContent.PLAYER2BASE;
+  for (int i = 4; i < 6; i++) {
+    for (int k = 4; k < 6; k++) {
+      backTiles[i][k].content = TileContent.BLOCK;
+    }
+  }
   moveToTileNeighbor(base2Tile, Side.LEFT);
   moveToTileNeighbor(base1Tile, Side.RIGHT);
-  
+
   minim = new Minim(this);
   player = minim.loadFile("millionaire.mp3", 2048);
   player.loop();
@@ -183,13 +187,16 @@ void mouseClicked() {
     }
   }
   else if (picked != -1) {
-    removeAllLasers();
     Tile tmpTile = tiles2.get(picked);
     //tmpTile.updateLaser(1);
     //tmpTile.updateLaser2(Side.LEFT);
-    tmpTile.mirror = new Mirror(rightOrLeftMirror, tmpTile.side);
-    moveToTileNeighbor(base2Tile, Side.LEFT);
-    moveToTileNeighbor(base1Tile, Side.RIGHT);
+    if (tmpTile.content == TileContent.EMPTY && !player1Won && !player2Won) {
+      removeAllLasers();
+      tmpTile.mirror = new Mirror(rightOrLeftMirror, tmpTile.side);
+      tmpTile.content = TileContent.MIRROR;
+      moveToTileNeighbor(base2Tile, Side.LEFT);
+      moveToTileNeighbor(base1Tile, Side.RIGHT);
+    }
   }
 }
 int getPicked() {
@@ -644,25 +651,21 @@ void moveToTileNeighbor(Tile prev, Side fromSide) {
       }
     }
   }
-  if (neighbor == blockTile) {
+  if (neighbor.content == TileContent.BLOCK) {
     return;
   }
-  if (neighbor == base1Tile) {
+  if (neighbor.content == TileContent.PLAYER1BASE) {
     println("PLAYER2 WINS");
     player2Won = true;
     return;
   }
-  if (neighbor == base2Tile) {
+  if (neighbor.content == TileContent.PLAYER2BASE) {
     println("PLAYER1 WINS");
     player1Won = true;
     return;
   }
   if (overEdge) {
     prev.updateLaser2(neighbor.side);
-  }
-  if (prev.side == Side.FRONT && toSide == Side.RIGHT) {
-    println("PREV: " + prev.lasersMap);
-    println("NEIGHBOR: " +neighbor.lasersMap);
   }
   prev.drawMyLasers2();
   moveToTileNeighbor(neighbor, toSide);

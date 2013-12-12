@@ -19,6 +19,7 @@ class Tile implements Comparable {
   boolean [] lasers = new boolean[4];
   HashMap<Side, Boolean> lasersMap;
   Mirror mirror;
+  TileContent content;
 
   boolean isCurrentTile;
 
@@ -78,6 +79,7 @@ class Tile implements Comparable {
     this.size = size;
     this.side = side;
     this.isCurrentTile = false;
+    this.content = TileContent.EMPTY;
     this.laserGame = laserGame;
     boolean [] lasers = {
       false, false, false, false
@@ -138,9 +140,19 @@ class Tile implements Comparable {
       vertex(c.x, c.y, c.z);
       vertex(d.x, d.y, d.z);
       endShape(CLOSE);
-
-
-    drawMyLasers2();
+      drawMyLasers2();
+      if (content == TileContent.BLOCK){
+        //TODO: PIIRRÄ BLOCKKI
+      }
+      if (content == TileContent.PLAYER1BASE){
+        //TODO: PIIRRÄ BASE
+      }
+      if (content == TileContent.PLAYER2BASE){
+        //TODO: PIIRRÄ BASE
+      }
+      if (content == TileContent.MIRROR){
+        //TODO: PIIRRÄ PEILI
+      }
       //return;
     }
      /* for (int i = 0; i<4 ; i++) {
@@ -237,7 +249,7 @@ class Tile implements Comparable {
     //println("UPDATE: " + lasersMap);
     }
   }
-
+  //TODO: LASER HIENOMMAKSI. KÄYTÄ VAIKKA NIITÄ RIBBONEITA JA PIENIÄ PARTIKKELEITA
   void drawMyLasers2() {
     float x2 = cx;
     float y2 = cy;
