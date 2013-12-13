@@ -20,6 +20,7 @@ class Tile implements Comparable {
   HashMap<Side, Boolean> lasersMap;
   Mirror mirror;
   TileContent content;
+    boolean actualLaser;
 
   boolean isCurrentTile;
 
@@ -245,11 +246,11 @@ class Tile implements Comparable {
           y2 = d.y;
           z2 = d.z;
         }
-        
-      fill(255);
-      stroke(255);
-      beginShape();
-      stroke(0);
+
+        fill(255);
+        stroke(255);
+        beginShape();
+        stroke(0);
         if (side == Side.FRONT) {
           vertex(x1+1, y1+1, z1);
           vertex(x2 -1, y2-1, z2);  
@@ -391,9 +392,7 @@ class Tile implements Comparable {
     float x2 = cx;
     float y2 = cy;
     float z2 = cz;
-    if (this.side == Side.FRONT) {
-      //println(lasersMap);
-    }
+    color [] laserColors = {color(0, 255, 0), color(50, 255, 50), color(100, 255, 100), color(150, 255, 150), color(255, 255, 255)};
 
     if (lasersMap.get(Side.FRONT)) {
       x2 = cx;
@@ -401,12 +400,7 @@ class Tile implements Comparable {
       z2 = cz;
       //println("DRAW FRONT");
       z2 += size;
-      strokeWeight(5);
-      stroke(0, 255, 0);
-      //println("cx: " + this.cx + ", cy: " +  this.cy + ", cz: " + this.cz + ", x2: " + x2 + ", y2: " + y2 + ", z2: " + z2);
-      line(this.cx, this.cy, this.cz, x2, y2, z2);
-      stroke(100);
-      strokeWeight(1);
+      drawLaser(this.cx, this.cy, this.cz, x2, y2, z2, laserColors);
     }
     if (lasersMap.get(Side.RIGHT)) {
       if (this.side == Side.FRONT) {
@@ -417,24 +411,14 @@ class Tile implements Comparable {
       y2 = cy;
       z2 = cz;
       x2 += size;
-      strokeWeight(5);
-      stroke(0, 255, 0);
-      //println("cx: " + this.cx + ", cy: " +  this.cy + ", cz: " + this.cz + ", x2: " + x2 + ", y2: " + y2 + ", z2: " + z2);
-      line(this.cx, this.cy, this.cz, x2, y2, z2);
-      stroke(100);
-      strokeWeight(1);
+      drawLaser(this.cx, this.cy, this.cz, x2, y2, z2, laserColors);
     }
     if (lasersMap.get(Side.BACK)) {
       x2 = cx;
       y2 = cy;
       z2 = cz;
       z2 -= size;
-      strokeWeight(5);
-      stroke(0, 255, 0);
-      //println("cx: " + this.cx + ", cy: " +  this.cy + ", cz: " + this.cz + ", x2: " + x2 + ", y2: " + y2 + ", z2: " + z2);
-      line(this.cx, this.cy, this.cz, x2, y2, z2);
-      stroke(100);
-      strokeWeight(1);
+      drawLaser(this.cx, this.cy, this.cz, x2, y2, z2, laserColors);
     }
     if (lasersMap.get(Side.LEFT)) {
 
@@ -446,36 +430,21 @@ class Tile implements Comparable {
       y2 = cy;
       z2 = cz;
       x2 -= size;
-      strokeWeight(5);
-      stroke(0, 255, 0);
-      //println("cx: " + this.cx + ", cy: " +  this.cy + ", cz: " + this.cz + ", x2: " + x2 + ", y2: " + y2 + ", z2: " + z2);
-      line(this.cx, this.cy, this.cz, x2, y2, z2);
-      stroke(100);
-      strokeWeight(1);
+      drawLaser(this.cx, this.cy, this.cz, x2, y2, z2, laserColors);
     }
     if (lasersMap.get(Side.TOP)) {
       x2 = cx;
       y2 = cy;
       z2 = cz;
       y2 -= size;
-      strokeWeight(5);
-      stroke(0, 255, 0);
-      //println("cx: " + this.cx + ", cy: " +  this.cy + ", cz: " + this.cz + ", x2: " + x2 + ", y2: " + y2 + ", z2: " + z2);
-      line(this.cx, this.cy, this.cz, x2, y2, z2);
-      stroke(100);
-      strokeWeight(1);
+      drawLaser(this.cx, this.cy, this.cz, x2, y2, z2, laserColors);
     }
     if (lasersMap.get(Side.BOTTOM)) {
       x2 = cx;
       y2 = cy;
       z2 = cz;
       y2 += size;
-      strokeWeight(5);
-      stroke(0, 255, 0);
-      //println("cx: " + this.cx + ", cy: " +  this.cy + ", cz: " + this.cz + ", x2: " + x2 + ", y2: " + y2 + ", z2: " + z2);
-      line(this.cx, this.cy, this.cz, x2, y2, z2);
-      stroke(100);
-      strokeWeight(1);
+      drawLaser(this.cx, this.cy, this.cz, x2, y2, z2, laserColors);
     }
   }
 
@@ -603,6 +572,16 @@ class Tile implements Comparable {
 
     return false;
   }
+  void drawLaser(float x1, float y1, float z1, float x2, float y2, float z2, color[] laserColors){
+      for (int i = 0; i < 5; i++){
+        strokeWeight(5-i);
+        stroke(laserColors[i]);
+        line(x1, y1, z1, x2, y2, z2);
+      }
+      stroke(100);
+      strokeWeight(1);
+  }
+    
 
   // muuttaa seuraavan tiilen Suunta tulo1 (if null tulo2)
   // ja palauttaa seuraavan tiilen 
