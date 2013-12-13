@@ -21,7 +21,7 @@ class Tile implements Comparable {
   Mirror mirror;
   TileContent content;
   boolean actualLaser;
-    
+
 
   boolean isCurrentTile;
 
@@ -87,43 +87,6 @@ class Tile implements Comparable {
     boolean [] lasers = {
       false, false, false, false
     };
-    if (side == Side.FRONT) {
-      //TOP, RIGHT, LEFT, FRONT, BACK, BOTTOM
-      sides2D[0] = Side.TOP;
-      sides2D[1] = Side.RIGHT;
-      sides2D[2] = Side.BOTTOM;
-      sides2D[3] = Side.LEFT;
-    }
-    else if (side == Side.BACK) {
-      sides2D[0] = Side.TOP;
-      sides2D[1] = Side.RIGHT;
-      sides2D[2] = Side.BOTTOM;
-      sides2D[3] = Side.LEFT;
-    }
-    else if (side == Side.RIGHT) {
-      sides2D[0] = Side.TOP;
-      sides2D[1] = Side.FRONT;
-      sides2D[2] = Side.BOTTOM;
-      sides2D[3] = Side.BACK;
-    }
-    else if (side == Side.LEFT) {        
-      sides2D[0] = Side.TOP;
-      sides2D[1] = Side.FRONT;
-      sides2D[2] = Side.BOTTOM;
-      sides2D[3] = Side.BACK;
-    }    
-    else if (side == Side.TOP) {
-      sides2D[0] = Side.LEFT;
-      sides2D[1] = Side.FRONT;
-      sides2D[2] = Side.RIGHT;
-      sides2D[3] = Side.BACK;
-    }
-    else if (side == Side.BOTTOM) {
-      sides2D[0] = Side.LEFT;
-      sides2D[1] = Side.FRONT;
-      sides2D[2] = Side.RIGHT;
-      sides2D[3] = Side.BACK;
-    }
   }
 
   public void display(boolean onlyShape) {
@@ -175,7 +138,7 @@ class Tile implements Comparable {
           zAup = a.z +up;
           zBup = b.z +up;
           zCup = c.z +up;  
-          zDup = d.z +up;   
+          zDup = d.z +up;
         }
 
         else if (side == Side.LEFT || side == Side.RIGHT) {
@@ -199,28 +162,28 @@ class Tile implements Comparable {
         else if (content == TileContent.BLOCK ) {
           pattern = laserGame.block;
         }
-      beginShape(QUADS);
+        beginShape(QUADS);
         texture(pattern);
         vertex(a.x, a.y, a.z, pic, pic);
         vertex(b.x, b.y, b.z, 0, pic);
-        vertex(xBup, yBup, zBup, 0,0);
+        vertex(xBup, yBup, zBup, 0, 0);
         vertex(xAup, yAup, zAup, pic, 0);
-        
+
         vertex(b.x, b.y, b.z, pic, pic);
         vertex(c.x, c.y, c.z, 0, pic);
         vertex(xCup, yCup, zCup, 0, 0);
         vertex(xBup, yBup, zBup, pic, 0);
-        
+
         vertex(c.x, c.y, c.z, pic, pic);
         vertex(d.x, d.y, d.z, 0, pic);
-        vertex(xDup, yDup, zDup, 0,0);
+        vertex(xDup, yDup, zDup, 0, 0);
         vertex(xCup, yCup, zCup, pic, 0);
-        
+
         vertex(a.x, a.y, a.z, pic, pic);
         vertex(d.x, d.y, d.z, 0, pic);
         vertex(xDup, yDup, zDup, 0, 0);
-        vertex(xAup, yAup, zAup, pic,0);
-        
+        vertex(xAup, yAup, zAup, pic, 0);
+
         vertex(xAup, yAup, zAup, 0, 0); 
         vertex(xBup, yBup, zBup, pic, 0);
         vertex(xCup, yCup, zCup, pic, pic);
@@ -294,90 +257,9 @@ class Tile implements Comparable {
       }
       //return;
     }
-    /* for (int i = 0; i<4 ; i++) {
-     if (lasers[i]) {
-     int x2 = this.cx;
-     int y2 = this.cy;
-     int z2 = this.cz;
-     if (sides2D[i] == Side.RIGHT) {
-     x2 = cx+(this.size/2);
-     }
-     else if (sides2D[i] == Side.LEFT) {
-     x2 = cx-(this.size/2);
-     }
-     else if (sides2D[i] == Side.TOP) {
-     y2 = cx-(this.size/2);
-     }
-     else if (sides2D[i] == Side.BOTTOM) {
-     y2 = cx+(this.size/2);
-     }
-     else if (sides2D[i] == Side.FRONT) {
-     y2 = cx+(this.size/2);
-     }
-     else if (sides2D[i] == Side.BACK) {
-     y2 = cx-(this.size/2);
-     }    
-     println("drawing in " + this.side + " x: " + this.squareX + "  y: " + this.squareY + "  suunta2D: " + i + " suunta3D: " + this.get3DSide(i));
-     strokeWeight(5);
-     stroke(0, 255, 0);
-     println("cx: " + this.cx + ", cy: " +  this.cy + ", cz: " + this.cz + ", x2: " + x2 + ", y2: " + y2 + ", z2: " + z2);
-     line(this.cx, this.cy, this.cz, x2, y2, z2);
-     stroke(100);
-     strokeWeight(1);
-     }
-     
-     }*/
-    //println("piirron loppu!");
-
-    //drawMyLasers();
-    /*if (side == Side.FRONT || side == Side.BACK) {
-     beginShape();
-     vertex(x, y, z);
-     vertex(x+size, y, z);
-     vertex(x+size, y+size, z);
-     vertex(x, y+size, z);
-     endShape(CLOSE);
-     }
-     if (side == Side.TOP || side == Side.BOTTOM) {
-     beginShape();
-     vertex(x, y, z);
-     vertex(x+size, y, z);
-     vertex(x+size, y, z+size);
-     vertex(x, y, z+size);
-     endShape(CLOSE);
-     }
-     if (side == Side.RIGHT || side == Side.LEFT) {
-     beginShape();
-     vertex(x, y, z);
-     vertex(x, y+size, z);
-     vertex(x, y+size, z+size);
-     vertex(x, y, z+size);
-     endShape(CLOSE);
-     }*/
   }
 
-  void updateLaser(int tulosuunta2D) {
-    //println("updating in " + this.side + " x: " + this.squareX + "  y: " + this.squareY + "  suunta2D: " + tulosuunta2D + "  suunta 3D: " + sides2D[tulosuunta2D]);
-    //println("UpdateLaser: X: " + x + ", Y: " + y + ", Z: " + z);
-    // piirrä omat laserit
-    int lahtosuunta2D = 10;
-    // TODO: MUUTETAAN JOS ON PEILI
-    if (tulosuunta2D == 0) {
-      lahtosuunta2D = 2;
-    }
-    else if (tulosuunta2D == 2) {
-      lahtosuunta2D = 0;
-    }
-    else if (tulosuunta2D == 1) {
-      lahtosuunta2D = 3;
-    }
-    else if (tulosuunta2D == 3) {
-      lahtosuunta2D = 1;
-    }
-    this.lasers[lahtosuunta2D] = true;
-    display(false);
-    this.laserGame.moveToTileNeighbor(this, lahtosuunta2D);
-  }
+  
 
   void updateLaser2(Side side) {
     if (this.side == Side.FRONT) {
@@ -393,7 +275,9 @@ class Tile implements Comparable {
     float x2 = cx;
     float y2 = cy;
     float z2 = cz;
-    color [] laserColors = {color(0, 255, 0), color(50, 255, 50), color(100, 255, 100), color(150, 255, 150), color(255, 255, 255)};
+    color [] laserColors = {
+      color(0, 255, 0), color(50, 255, 50), color(100, 255, 100), color(150, 255, 150), color(255, 255, 255)
+    };
 
     if (lasersMap.get(Side.FRONT)) {
       x2 = cx;
@@ -573,43 +457,41 @@ class Tile implements Comparable {
 
     return false;
   }
-  void drawLaser(float x1, float y1, float z1, float x2, float y2, float z2, color[] laserColors){
-      for (int i = 0; i < 5; i++){
-        strokeWeight(5-i);
-        stroke(laserColors[i]);
-        line(x1, y1, z1, x2, y2, z2);
+  void drawLaser(float x1, float y1, float z1, float x2, float y2, float z2, color[] laserColors) {
+    for (int i = 0; i < 5; i++) {
+      strokeWeight(5-i);
+      stroke(laserColors[i]);
+      line(x1, y1, z1, x2, y2, z2);
+    }
+    float range = 10;
+    float tmpX, tmpY, tmpZ;
+    stroke(laserColors[0]);
+    if (x1 == x2 && z1 == z2) {
+      for (int i = 0; i < 20; i++) {
+        tmpX = (float)((Math.random()-0.5)*range);
+        tmpZ = (float)((Math.random()-0.5)*range);
+        point(x1+tmpX, (float)(y1+i), z1+tmpZ);
       }
-      float range = 10;
-      float tmpX, tmpY, tmpZ;
-      stroke(laserColors[0]);
-      if (x1 == x2 && z1 == z2){
-        for (int i = 0; i < 20; i++){
-          tmpX = (float)((Math.random()-0.5)*range);
-          tmpZ = (float)((Math.random()-0.5)*range);
-          point(x1+tmpX, (float)(y1+i), z1+tmpZ);
-        }
+    }
+    if (x1 == x2 && y1 == y2) {
+      for (int i = 0; i < 20; i++) {
+        tmpX = (float)((Math.random()-0.5)*range);
+        tmpY = (float)((Math.random()-0.5)*range);
+        point(x1+tmpX, y1+tmpY, (float)(z1+i));
       }
-      if (x1 == x2 && y1 == y2){
-        for (int i = 0; i < 20; i++){
-          tmpX = (float)((Math.random()-0.5)*range);
-          tmpY = (float)((Math.random()-0.5)*range);
-          point(x1+tmpX, y1+tmpY, (float)(z1+i));
-        }
-        
+    }
+    if (y1 == y2 && z1 == z2) {
+      for (int i = 0; i < 20; i++) {
+        tmpY = (float)((Math.random()-0.5)*range);
+        tmpZ = (float)((Math.random()-0.5)*range);
+        point((float)(x1+i), y1+tmpY, z1+tmpZ);
       }
-      if (y1 == y2 && z1 == z2){
-        for (int i = 0; i < 20; i++){
-          tmpY = (float)((Math.random()-0.5)*range);
-          tmpZ = (float)((Math.random()-0.5)*range);
-          point((float)(x1+i), y1+tmpY, z1+tmpZ);
-        }
-        
-      }
-        
-      stroke(100);
-      strokeWeight(1);
+    }
+
+    stroke(100);
+    strokeWeight(1);
   }
-    
+
 
   // muuttaa seuraavan tiilen Suunta tulo1 (if null tulo2)
   // ja palauttaa seuraavan tiilen 
@@ -618,14 +500,4 @@ class Tile implements Comparable {
   //esim: jos laser tulee left naapurista, menee right naapuriin
 }
 
-
-// UPDATE:
-// Getnai(this, suunta2D);
-// PiirräLaser
-// Getnai.update();
-
-
-// PiirräLaserit();
-// kutsuu LaserGamen piirrä laser(xyz, xyz);
-// käyttää omaa listaa laserit, joka boolean 0 1 2 3 -suunnat
 
