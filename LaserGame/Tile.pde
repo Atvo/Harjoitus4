@@ -578,6 +578,33 @@ class Tile implements Comparable {
         stroke(laserColors[i]);
         line(x1, y1, z1, x2, y2, z2);
       }
+      float range = 5;
+      float tmpX, tmpY, tmpZ;
+      stroke(laserColors[0]);
+      if (x1 == x2 && z1 == z2){
+        for (int i = 0; i < 20; i++){
+          tmpX = (float)((Math.random()-0.5)*range);
+          tmpZ = (float)((Math.random()-0.5)*range);
+          point(x1+tmpX, (float)(y+i/2), z1+tmpZ);
+        }
+      }
+      if (x1 == x2 && y1 == y2){
+        for (int i = 0; i < 20; i++){
+          tmpX = (float)((Math.random()-0.5)*range);
+          tmpY = (float)((Math.random()-0.5)*range);
+          point(x1+tmpX, y+tmpY, (float)(z1+i/2));
+        }
+        
+      }
+      if (y1 == y2 && z1 == z2){
+        for (int i = 0; i < 20; i++){
+          tmpY = (float)((Math.random()-0.5)*range);
+          tmpZ = (float)((Math.random()-0.5)*range);
+          point((float)(x1+i/2), y+tmpY, z1+tmpZ);
+        }
+        
+      }
+        
       stroke(100);
       strokeWeight(1);
   }
