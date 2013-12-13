@@ -1,4 +1,5 @@
-
+/*Luokasta kunnia kuuluu Tom Cardenille.
+  Kopioitu suoraan: täältä http://www.tom-carden.co.uk/p5/picking_with_projection/applet/*/
 class Vector3d {
 
   float x,y,z;
@@ -17,6 +18,7 @@ class Vector3d {
     this.z = -random(-boxsize,boxsize)-(width+height)/2;
   }
 
+  //Luo uuden vektorin, joka on projisoitu ruudulle
   Vector3d project() {
     return new Vector3d(screenX(x,y,z),screenY(x,y,z),screenZ(x,y,z));
   }

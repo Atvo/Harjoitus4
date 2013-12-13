@@ -16,13 +16,12 @@ Tile base1Tile, base2Tile, blockTile;
 int tileSize, cubeSize;
 //kuution reunojen koordinaatit
 int max;
-Tile currentTile;
-int picked;
-int tmpCounter;
+Tile currentTile; //Kulloinkin valittu laatta
+int picked; //Kulloinkin valitun laatan indeksi listassa
 boolean player1Won, player2Won;
 boolean player1Turn = true;
 boolean rightOrLeftMirror;
-boolean actualLaser;
+boolean actualLaser; //True = Oikea laser, False = Apulaser, joka helpottaa pelaajia peilejä asetettaessa
 boolean firstStart = true;
 
 //SETUP
@@ -209,7 +208,7 @@ void draw() {
       else {
         fill(200);
       }
-      t.display(true);
+      t.display();
     }
   }
   
@@ -258,8 +257,7 @@ void mouseClicked() {
   }
   
   //Peli käynnissä
-  else { 
-<<<<<<< HEAD
+  else {
     
     //Jos klikataan oikealla näppäimellä, käännetään asetettavan peilin asentoa
     if (mouseButton == RIGHT) {
@@ -338,7 +336,7 @@ void moveToTileNeighbor(Tile prev, Side fromSide) {
   }
   
   //Päivitetään nykyiselle laatalle tieto sen lasereista
-  prev.updateLaser2(fromSide);
+  prev.updateLaser(fromSide);
   
   //Jos laatassa on peili, päivitetään tieto, mistä päin laattaan tullaan
   if (prev.content == TileContent.MIRROR) {
@@ -357,7 +355,10 @@ void moveToTileNeighbor(Tile prev, Side fromSide) {
   3. Tarkistetaan suunta, josta ollaan tulossa
   4. Selvitetään naapuri ja päivitetään menosuunta
   
-  Tämä toistetaan jokaisella kuution sivulla ja suunnalla.*/
+  Tämä toistetaan jokaisella kuution sivulla ja suunnalla.
+  
+  PS: Yritimme tehdä tämän hienostuneemmin, mutta kaikki muut yritykset epäonnistuivat,
+  joten päätimme tehdä homman näin, jotta metodi ainakin toimisi.*/
   
   if (prev.side == Side.FRONT) {
     if (prev.squareX == 0 && fromSide == Side.RIGHT) {
@@ -715,13 +716,13 @@ void moveToTileNeighbor(Tile prev, Side fromSide) {
   
   //Jos naapurissa on Blocki, päivitetään naapurin laserit ja poistutaan metodista
   if (neighbor.content == TileContent.BLOCK) {
-    neighbor.updateLaser2(toSide);
+    neighbor.updateLaser(toSide);
     return;
   }
   
   //Jos naapurissa on jommankumman pelaajan tukikohta, päivitetään naapurin laserit ja poistutaan metodista
   if (neighbor.content == TileContent.PLAYER1BASE) {
-    neighbor.updateLaser2(toSide);
+    neighbor.updateLaser(toSide);
     
     //Jos ollaan seurattu oikeaa laseria eikä apulaseria, päivitetään voittomuuttuja
     if (actualLaser) {
@@ -730,7 +731,7 @@ void moveToTileNeighbor(Tile prev, Side fromSide) {
     return;
   }
   if (neighbor.content == TileContent.PLAYER2BASE) {
-    neighbor.updateLaser2(toSide);
+    neighbor.updateLaser(toSide);
     if (actualLaser) {
       player1Won = true;
     }
@@ -739,7 +740,7 @@ void moveToTileNeighbor(Tile prev, Side fromSide) {
   
   //Jos mennään yli reunan päivitetään vielä nykyisen laatan lasereita, jotta ne eivät katkeaisi
   if (overEdge) {
-    prev.updateLaser2(neighbor.side);
+    prev.updateLaser(neighbor.side);
   }
   
   //Kun ollaan valmiita, kutsutaan metodia uudestaan naapurille ja päivitetyllä tulosuunnalla
