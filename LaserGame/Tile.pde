@@ -20,7 +20,8 @@ class Tile implements Comparable {
   HashMap<Side, Boolean> lasersMap;
   Mirror mirror;
   TileContent content;
-    boolean actualLaser;
+  boolean actualLaser;
+    
 
   boolean isCurrentTile;
 
@@ -152,6 +153,7 @@ class Tile implements Comparable {
       if (content == TileContent.BLOCK || content == TileContent.PLAYER1BASE || content == TileContent.PLAYER2BASE) {
         float xAup, yAup, zAup, xBup, yBup, zBup, xCup, yCup, zCup, xDup, yDup, zDup;
         float up = 20;
+        PImage pattern;
         xAup = a.x;
         yAup = a.y;
         zAup = a.z;
@@ -188,15 +190,15 @@ class Tile implements Comparable {
           yDup = d.y +up;
         }
         if (content == TileContent.PLAYER1BASE) {
-          // texture SAARA
+          pattern = laserGame.p1;
         }
         else if (content == TileContent.PLAYER2BASE) {
-          // texture SAARA
+          pattern = laserGame.p2;
         }
         else if (content == TileContent.BLOCK ) {
-          // texture SAARA
+          pattern = laserGame.block;
         }
-        fill(0);
+        texture(pattern);
         vertex(a.x, a.y, a.z);
         vertex(b.x, b.y, b.z);
         vertex(xBup, yBup, zBup);
@@ -226,6 +228,7 @@ class Tile implements Comparable {
         vertex(xCup, yCup, zCup);
         vertex(xDup, yDup, zDup);  
         endShape(CLOSE);
+        fill(0);
       }
 
       if (content == TileContent.MIRROR || isCurrentTile) {
@@ -578,21 +581,21 @@ class Tile implements Comparable {
         stroke(laserColors[i]);
         line(x1, y1, z1, x2, y2, z2);
       }
-      float range = 5;
+      float range = 10;
       float tmpX, tmpY, tmpZ;
       stroke(laserColors[0]);
       if (x1 == x2 && z1 == z2){
         for (int i = 0; i < 20; i++){
           tmpX = (float)((Math.random()-0.5)*range);
           tmpZ = (float)((Math.random()-0.5)*range);
-          point(x1+tmpX, (float)(y+i/2), z1+tmpZ);
+          point(x1+tmpX, (float)(y1+i), z1+tmpZ);
         }
       }
       if (x1 == x2 && y1 == y2){
         for (int i = 0; i < 20; i++){
           tmpX = (float)((Math.random()-0.5)*range);
           tmpY = (float)((Math.random()-0.5)*range);
-          point(x1+tmpX, y+tmpY, (float)(z1+i/2));
+          point(x1+tmpX, y1+tmpY, (float)(z1+i));
         }
         
       }
@@ -600,7 +603,7 @@ class Tile implements Comparable {
         for (int i = 0; i < 20; i++){
           tmpY = (float)((Math.random()-0.5)*range);
           tmpZ = (float)((Math.random()-0.5)*range);
-          point((float)(x1+i/2), y+tmpY, z1+tmpZ);
+          point((float)(x1+i), y1+tmpY, z1+tmpZ);
         }
         
       }

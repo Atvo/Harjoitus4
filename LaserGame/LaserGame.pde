@@ -1,8 +1,11 @@
 import java.util.Collections;
 import ddf.minim.*;
 
+PImage startScreen, endScreen1, endscreen2, endscreenTie;
+PImage block, p1, p2;
 AudioPlayer player;
 Minim minim;  // pelin aani
+GameState gameState;
 float rotx = PI/4;
 float roty = PI/4;
 Tile[][] frontTiles, backTiles, rightTiles, leftTiles, topTiles, bottomTiles;
@@ -23,10 +26,20 @@ boolean rightOrLeftMirror;
 boolean actualLaser;
 
 void setup() {
+  gameState == GameState.START;
+  startScreen = new PImage("Lasergame.jpg");
+  endScreen1 = new PImage("Player_1.jpg");
+  endScreen2 = new PImage("Player_2.jpg");
+  endScreentTie = new PImage("Tie.jpg");
+  p1 = new PImage("P1.jpg");
+  p2 = new PImage("P2.jpg");
+  block = new PImage("Block.jpg");
+  
+  
   tmpCounter = 0;
   size(640, 360, P3D);
-  this.tileSize = 20;
-  this.cubeSize = 10;  
+  tileSize = 20;
+  cubeSize = 10;  
   frontTiles = new Tile [cubeSize][cubeSize];
   backTiles = new Tile [cubeSize][cubeSize];
   rightTiles = new Tile [cubeSize][cubeSize];
@@ -110,8 +123,37 @@ void setup() {
   player = minim.loadFile("millionaire.mp3", 2048);
   player.loop();
 }
+void newGame(){
+  player1Won = false;
+  player2Won = false;
+  player1Turn = true;
+  rightOrLeftMirror = true;
+  for (int i = 0; i < 6; i++) {
+    for (int j = 0; j < cubeSize; j++) {
+      for (int k = 0; k < cubeSize; k++) {
+        tiles[i][j][k].content = TileContent.EMPTY;
+      }
+    }
+  }
+  gameState = GameState.GOING;
+  moveToTileNeighbor(base2Tile, Side.LEFT);
+  moveToTileNeighbor(base1Tile, Side.RIGHT);
+}
+   
 
 void draw() {
+  if (gameState == GameState.START) {
+    img(startImage, 0, 0);
+  }
+  else if (gameState == GameState.PLAYER1) {
+    img(endScreen1, 0, 0);
+  }
+  else if (gameState == GameState.PLAYER2) {
+    img(endScreen2, 0, 0);
+  }
+  else if (gameState == GameState.TIE) {
+    img(endScreenTie, 0, 0);
+  }    
   background(0);
   noStroke(); // jotta sisällä oltavan pallon piirtoviivat eivät näy
 
@@ -160,8 +202,8 @@ void draw() {
     }
     t.display(true);
   }
- 
-  
+
+
   //frontTiles[0][0].updateLaser(0);
 }
 
@@ -179,7 +221,7 @@ void mouseDragged() {
 }
 
 void mouseMoved() {
-  if (!player1Won && !player2Won){
+  if (!player1Won && !player2Won) {
     removeAllLasers();
     this.actualLaser = true;
     moveToTileNeighbor(base2Tile, Side.LEFT);
@@ -190,30 +232,43 @@ void mouseMoved() {
 
 void mouseClicked() {
   //removeAllLasers();
-  tmpCounter = 0;
-  println("Picked: " + picked);
-  if (mouseButton == RIGHT) {
-    rightOrLeftMirror = (rightOrLeftMirror) ? false : true;
-    /*if (rightOrLeftMirror) {
-     rightOrLeftMirror = false;
-     }
-     else {
-     rightOrLeftMirror = true;
-     }*/
+  if (gameState == GameState.START) {
+    if (mouseX< || <mouseX || <mouseY || mouseY<) {
+      gameState = Game.StateGOING;
+    }
   }
-  else if (picked != -1) {
-    Tile tmpTile = tiles2.get(picked);
-    //tmpTile.updateLaser(1);
-    //tmpTile.updateLaser2(Side.LEFT);
-    if (tmpTile.content == TileContent.EMPTY && !player1Won && !player2Won) {
-      removeAllLasers();
-      tmpTile.mirror.leftOrRight = rightOrLeftMirror;
-      tmpTile.content = TileContent.MIRROR;
-      player1Turn = (player1Turn) ? false : true;
-      this.actualLaser = true;
-      moveToTileNeighbor(base2Tile, Side.LEFT);
-      this.actualLaser = true;
-      moveToTileNeighbor(base1Tile, Side.RIGHT);
+  else if (gameState == GameState.PLAYER1 || gameState == GameState.PLAYER2 || gameState == GameState.TIE) {
+    if (mouseX< || <mouseX || <mouseY || mouseY<) {
+      gameState = Game.StateSTART;
+      setup();
+    }
+  }
+  else { 
+    tmpCounter = 0;
+    println("Picked: " + picked);
+    if (mouseButton == RIGHT) {
+      rightOrLeftMirror = (rightOrLeftMirror) ? false : true;
+      /*if (rightOrLeftMirror) {
+       rightOrLeftMirror = false;
+       }
+       else {
+       rightOrLeftMirror = true;
+       }*/
+    }
+    else if (picked != -1) {
+      Tile tmpTile = tiles2.get(picked);
+      //tmpTile.updateLaser(1);
+      //tmpTile.updateLaser2(Side.LEFT);
+      if (tmpTile.content == TileContent.EMPTY && !player1Won && !player2Won) {
+        removeAllLasers();
+        tmpTile.mirror.leftOrRight = rightOrLeftMirror;
+        tmpTile.content = TileContent.MIRROR;
+        player1Turn = (player1Turn) ? false : true;
+        this.actualLaser = true;
+        moveToTileNeighbor(base2Tile, Side.LEFT);
+        this.actualLaser = true;
+        moveToTileNeighbor(base1Tile, Side.RIGHT);
+      }
     }
   }
 }
@@ -306,7 +361,7 @@ void moveToTileNeighbor(Tile prev, Side fromSide) {
   boolean overEdge = false;
   Side toSide = fromSide;
   //println("fromsIde: " + fromSide);
-    
+
   if (prev.content == TileContent.MIRROR) {
     toSide = prev.mirror.changeLaserDirection(fromSide);
   }
