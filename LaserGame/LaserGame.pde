@@ -11,8 +11,8 @@ float roty = PI/4;
 Tile[][] frontTiles, backTiles, rightTiles, leftTiles, topTiles, bottomTiles;
 ArrayList<Tile> tilesList;
 Tile base1Tile, base2Tile, blockTile;
-Edge [] edges;
-Square front, back, right, left, top, bottom;
+
+
 int tileSize, cubeSize;
 //kuution reunojen koordinaatit
 int max;
@@ -73,6 +73,7 @@ void setup() {
       tilesList.add(tmpTile);
     }
   }
+  
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
       Tile tmpTile = new Tile(-max + i * tileSize, -max + k * tileSize, -max, tileSize, Side.BACK, i, k, this);
@@ -80,6 +81,7 @@ void setup() {
       tilesList.add(tmpTile);
     }
   }
+  
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
       Tile tmpTile = new Tile(max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.RIGHT, i, k, this);
@@ -87,6 +89,7 @@ void setup() {
       tilesList.add(tmpTile);
     }
   }
+  
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
       Tile tmpTile = new Tile(-max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.LEFT, i, k, this);
@@ -94,6 +97,7 @@ void setup() {
       tilesList.add(tmpTile);
     }
   }
+  
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
       Tile tmpTile = new Tile(-max + i * tileSize, -max, -max + k * tileSize, tileSize, Side.TOP, i, k, this);
@@ -101,6 +105,7 @@ void setup() {
       tilesList.add(tmpTile);
     }
   }
+  
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
       Tile tmpTile = new Tile(-max + i * tileSize, max, -max + k * tileSize, tileSize, Side.BOTTOM, i, k, this);
@@ -254,6 +259,7 @@ void mouseClicked() {
   
   //Peli käynnissä
   else { 
+<<<<<<< HEAD
     
     //Jos klikataan oikealla näppäimellä, käännetään asetettavan peilin asentoa
     if (mouseButton == RIGHT) {
@@ -308,6 +314,7 @@ int getPicked() {
 
 //Metodi, joka etsii laatan naapurin tulosuunnasta riippuen ja kertoo seuraavalle laatalle menosuunnan
 //Metodi kutsuu itse itseään ja sen tarkoitus on kulkea laserin mukaisesti
+
 void moveToTileNeighbor(Tile prev, Side fromSide) {
 
   Tile neighbor = null;
