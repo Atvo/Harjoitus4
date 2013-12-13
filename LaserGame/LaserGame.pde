@@ -274,18 +274,12 @@ void mouseClicked() {
   }
   else { 
     tmpCounter = 0;
-    println("Picked: " + picked);
+    Tile tmpTile = tiles2.get(picked);
     if (mouseButton == RIGHT) {
       rightOrLeftMirror = (rightOrLeftMirror) ? false : true;
-      /*if (rightOrLeftMirror) {
-       rightOrLeftMirror = false;
-       }
-       else {
-       rightOrLeftMirror = true;
-       }*/
+      tmpTile.mirror.leftOrRight = rightOrLeftMirror;
     }
     else if (picked != -1) {
-      Tile tmpTile = tiles2.get(picked);
       //tmpTile.updateLaser(1);
       //tmpTile.updateLaser2(Side.LEFT);
       if (tmpTile.content == TileContent.EMPTY && !player1Won && !player2Won) {
@@ -317,7 +311,7 @@ int getPicked() {
       }
     }
   }
-  //println(picked);
+
   return picked;
 }
 
@@ -339,8 +333,6 @@ void checkCurrentTile() {
       for (int k = 0; k < cubeSize; k++) {
         tmpTile = tiles[l][i][k];
         if (l == 0) {
-          //projectedX = (sin(roty)*100+cos(roty)*tileSize*(i-cubeSize/2)+width/2);
-          //println("PX: " + projectedX);
           xHypo = (float)(Math.sqrt(Math.pow(cubeSize*tileSize/2, 2)+Math.pow(tileSize*(i-cubeSize/2), 2)));
           if (i > 5) {
             xAlpha = roty + acos(100/xHypo);
