@@ -7,15 +7,6 @@ class Tile implements Comparable {
   Vector3d pa, pb, pc, pd;
   LaserGame laserGame;
   Side side;
-  // mistä säde tulee
-  int tulo1;
-  // minne säde menee
-  int meno1;
-  // vaihtoehtoiset, jos jo yksi säde ruudussa
-  Side tulo2;
-  Side meno2;
-  Side [] sides2D = new Side[4];
-  // Onko ruudussa laserit päällä: 0 pohjoinen, 1 itä, 2 etelä, 3 länsi
   boolean [] lasers = new boolean[4];
   HashMap<Side, Boolean> lasersMap;
   Mirror mirror;
@@ -92,12 +83,7 @@ class Tile implements Comparable {
   public void display(boolean onlyShape) {
     if (onlyShape) {
       fill(255);
-      //noFill();
-      /*MIIKA: otin pois, koska bugittaa valojen kanssa (testaa, ihan makee tietty jos käyttää oikein ja vaikka kaikille sivuille)
-       if (side == side.FRONT) {
-       fill(255, 0, 0);
-       }
-       */
+
       if (isCurrentTile) {
         fill(0, 0, 255);
       }
@@ -112,6 +98,7 @@ class Tile implements Comparable {
       stroke(255);
       stroke(0);
       drawMyLasers2();
+      // jos ruudussa jotain sisältöä piirretään kuutio
       if (content == TileContent.BLOCK || content == TileContent.PLAYER1BASE || content == TileContent.PLAYER2BASE) {
         float xAup, yAup, zAup, xBup, yBup, zBup, xCup, yCup, zCup, xDup, yDup, zDup;
         float up = 20;
@@ -130,8 +117,9 @@ class Tile implements Comparable {
         xDup = d.x;
         yDup = d.y;
         zDup = d.z;         
-
-        if (side == Side.BACK || side == Side.LEFT || side == Side.TOP) {
+        
+        // vastakkaisella puolella z-koordinaatti vähenee 
+        if (side == Side.BACK) {
           up = -20;
         } 
         if (side == Side.BACK || side == Side.FRONT) {
@@ -139,19 +127,6 @@ class Tile implements Comparable {
           zBup = b.z +up;
           zCup = c.z +up;  
           zDup = d.z +up;
-        }
-
-        else if (side == Side.LEFT || side == Side.RIGHT) {
-          xAup = a.x +up;
-          xBup = b.x +up;
-          xCup = c.x +up;  
-          xDup = d.x +up;
-        }
-        else if (side == Side.BOTTOM || side == Side.TOP) {
-          yAup = a.y +up;
-          yBup = b.y +up;
-          yCup = c.y +up;  
-          yDup = d.y +up;
         }
         if (content == TileContent.PLAYER1BASE) {
           pattern = laserGame.p1;
@@ -191,7 +166,7 @@ class Tile implements Comparable {
         endShape(CLOSE);
         fill(0);
       }
-
+    // jos ruudussa mirror, piirreetään se seuraavasti
       if (content == TileContent.MIRROR || isCurrentTile) {
         float x1, y1, z1, x2, y2, z2;
         if (!mirror.leftOrRight) {
@@ -215,6 +190,7 @@ class Tile implements Comparable {
         stroke(255);
         beginShape();
         stroke(0);
+        // piirretään yksi sivu kerrallaan
         if (side == Side.FRONT) {
           vertex(x1+1, y1+1, z1);
           vertex(x2 -1, y2-1, z2);  
@@ -334,42 +310,6 @@ class Tile implements Comparable {
   }
 
 
-  /*void drawMyLasers() {
-   for (int i = 0; i<4 ; i++) {
-   if (lasers[i]) {
-   int x2 = this.cx;
-   int y2 = this.cy;
-   int z2 = this.cz;
-   if (sides2D[i] == Side.RIGHT) {
-   x2 = cx+(this.size/2);
-   }
-   else if (sides2D[i] == Side.LEFT) {
-   x2 = cx-(this.size/2);
-   }
-   else if (sides2D[i] == Side.TOP) {
-   y2 = cx-(this.size/2);
-   }
-   else if (sides2D[i] == Side.BOTTOM) {
-   y2 = cx+(this.size/2);
-   }
-   else if (sides2D[i] == Side.FRONT) {
-   y2 = cx+(this.size/2);
-   }
-   else if (sides2D[i] == Side.BACK) {
-   y2 = cx-(this.size/2);
-   }    
-   println("drawing in " + this.side + " x: " + this.squareX + "  y: " + this.squareY + "  suunta2D: " + i);
-   strokeWeight(5);
-   stroke(0, 255, 0);
-   //println("cx: " + this.cx + ", cy: " +  this.cy + ", cz: " + this.cz + ", x2: " + x2 + ", y2: " + y2 + ", z2: " + z2);
-   line(this.cx, this.cy, this.cz, x2, y2, z2);
-   stroke(100);
-   strokeWeight(1);
-   }
-   }
-   }*/
-
-
   void project() {
     pa = a.project();
     pb = b.project();
@@ -406,32 +346,9 @@ class Tile implements Comparable {
     }
   }
 
-  void setTulo1(Tile tile, int tulo1) {
-    tile.tulo1 = tulo1;
-  }
-
-  int getSide2D (Side fromSide) {
-
-    for (int i= 0; i<4; i++) {
-      if (sides2D[i] == fromSide) {
-        return i;
-      }
-    }
-    return 0;
-  }
-
-  Side get3DSide(int side2D) {
-    return sides2D[side2D];
-  }
-
-  void laserOn(int side2D) {
-    lasers[side2D] = true;
-  }
 
   void allLasersOff() {
-    /*for (int i= 0; i<4; i++) {
-     lasers[i] = false;
-     }*/
+
     lasersMap.put(Side.FRONT, false);
     lasersMap.put(Side.RIGHT, false);
     lasersMap.put(Side.BACK, false);
@@ -491,13 +408,6 @@ class Tile implements Comparable {
     stroke(100);
     strokeWeight(1);
   }
-
-
-  // muuttaa seuraavan tiilen Suunta tulo1 (if null tulo2)
-  // ja palauttaa seuraavan tiilen 
-  //laserin piirtäminen tänne
-  //on metodit, joilla tiedetään mitkä on viereiset tilet
-  //esim: jos laser tulee left naapurista, menee right naapuriin
 }
 
 
