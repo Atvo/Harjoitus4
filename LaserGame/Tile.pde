@@ -153,7 +153,7 @@ class Tile implements Comparable {
       if (content == TileContent.BLOCK || content == TileContent.PLAYER1BASE || content == TileContent.PLAYER2BASE) {
         float xAup, yAup, zAup, xBup, yBup, zBup, xCup, yCup, zCup, xDup, yDup, zDup;
         float up = 20;
-        PImage pattern;
+        PImage pattern = laserGame.p1;
         xAup = a.x;
         yAup = a.y;
         zAup = a.z;

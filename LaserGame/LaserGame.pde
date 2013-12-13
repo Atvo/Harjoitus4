@@ -1,7 +1,7 @@
 import java.util.Collections;
 import ddf.minim.*;
 
-PImage startScreen, endScreen1, endscreen2, endscreenTie;
+PImage startScreen, endScreen1, endScreen2, endScreenTie;
 PImage block, p1, p2;
 AudioPlayer player;
 Minim minim;  // pelin aani
@@ -26,14 +26,14 @@ boolean rightOrLeftMirror;
 boolean actualLaser;
 
 void setup() {
-  gameState == GameState.START;
-  startScreen = new PImage("Lasergame.jpg");
-  endScreen1 = new PImage("Player_1.jpg");
-  endScreen2 = new PImage("Player_2.jpg");
-  endScreentTie = new PImage("Tie.jpg");
-  p1 = new PImage("P1.jpg");
-  p2 = new PImage("P2.jpg");
-  block = new PImage("Block.jpg");
+  gameState = GameState.START;
+  startScreen = loadImage("Lasergame.jpg");
+  endScreen1 = loadImage("Player_1.jpg");
+  endScreen2 = loadImage("Player_2.jpg");
+  endScreenTie = loadImage("Tie.jpg");
+  p1 = loadImage("P1.jpg");
+  p2 = loadImage("P2.jpg");
+  block = loadImage("Block.jpg");
   
   
   tmpCounter = 0;
@@ -143,16 +143,16 @@ void newGame(){
 
 void draw() {
   if (gameState == GameState.START) {
-    img(startImage, 0, 0);
+    image(startScreen, 0, 0);
   }
   else if (gameState == GameState.PLAYER1) {
-    img(endScreen1, 0, 0);
+    image(endScreen1, 0, 0);
   }
   else if (gameState == GameState.PLAYER2) {
-    img(endScreen2, 0, 0);
+    image(endScreen2, 0, 0);
   }
   else if (gameState == GameState.TIE) {
-    img(endScreenTie, 0, 0);
+    image(endScreenTie, 0, 0);
   }    
   background(0);
   noStroke(); // jotta sisällä oltavan pallon piirtoviivat eivät näy
@@ -233,13 +233,13 @@ void mouseMoved() {
 void mouseClicked() {
   //removeAllLasers();
   if (gameState == GameState.START) {
-    if (mouseX< || <mouseX || <mouseY || mouseY<) {
-      gameState = Game.StateGOING;
+    if (mouseX < 616  && 478<mouseX && 298<mouseY && mouseY<329) {
+      gameState = GameState.GOING;
     }
   }
   else if (gameState == GameState.PLAYER1 || gameState == GameState.PLAYER2 || gameState == GameState.TIE) {
-    if (mouseX< || <mouseX || <mouseY || mouseY<) {
-      gameState = Game.StateSTART;
+    if (mouseX < 616  && 478<mouseX && 298<mouseY && mouseY<329) {
+      gameState = GameState.START;
       setup();
     }
   }
