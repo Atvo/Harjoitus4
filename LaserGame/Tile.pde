@@ -147,12 +147,13 @@ class Tile implements Comparable {
 
       fill(255);
       stroke(255);
-      beginShape();
       stroke(0);
       drawMyLasers2();
       if (content == TileContent.BLOCK || content == TileContent.PLAYER1BASE || content == TileContent.PLAYER2BASE) {
         float xAup, yAup, zAup, xBup, yBup, zBup, xCup, yCup, zCup, xDup, yDup, zDup;
         float up = 20;
+        float big = 10;
+        float pic = 20;
         PImage pattern = laserGame.p1;
         xAup = a.x;
         yAup = a.y;
@@ -174,7 +175,7 @@ class Tile implements Comparable {
           zAup = a.z +up;
           zBup = b.z +up;
           zCup = c.z +up;  
-          zDup = d.z +up;
+          zDup = d.z +up;   
         }
 
         else if (side == Side.LEFT || side == Side.RIGHT) {
@@ -198,35 +199,32 @@ class Tile implements Comparable {
         else if (content == TileContent.BLOCK ) {
           pattern = laserGame.block;
         }
+      beginShape(QUADS);
         texture(pattern);
-        vertex(a.x, a.y, a.z);
-        vertex(b.x, b.y, b.z);
-        vertex(xBup, yBup, zBup);
-        vertex(xAup, yAup, zAup);
-        endShape(CLOSE);
-        beginShape();
-        vertex(b.x, b.y, b.z);
-        vertex(c.x, c.y, c.z);
-        vertex(xCup, yCup, zCup);
-        vertex(xBup, yBup, zBup);
-        endShape(CLOSE);
-        beginShape();
-        vertex(c.x, c.y, c.z);
-        vertex(d.x, d.y, d.z);
-        vertex(xDup, yDup, zDup);
-        vertex(xCup, yCup, zCup);
-        endShape(CLOSE);
-        beginShape();
-        vertex(a.x, a.y, a.z);
-        vertex(d.x, d.y, d.z);
-        vertex(xDup, yDup, zDup);
-        vertex(xAup, yAup, zAup);
-        endShape(CLOSE);
-        beginShape();
-        vertex(xAup, yAup, zAup); 
-        vertex(xBup, yBup, zBup);
-        vertex(xCup, yCup, zCup);
-        vertex(xDup, yDup, zDup);  
+        vertex(a.x, a.y, a.z, pic, pic);
+        vertex(b.x, b.y, b.z, 0, pic);
+        vertex(xBup, yBup, zBup, 0,0);
+        vertex(xAup, yAup, zAup, pic, 0);
+        
+        vertex(b.x, b.y, b.z, pic, pic);
+        vertex(c.x, c.y, c.z, 0, pic);
+        vertex(xCup, yCup, zCup, 0, 0);
+        vertex(xBup, yBup, zBup, pic, 0);
+        
+        vertex(c.x, c.y, c.z, pic, pic);
+        vertex(d.x, d.y, d.z, 0, pic);
+        vertex(xDup, yDup, zDup, 0,0);
+        vertex(xCup, yCup, zCup, pic, 0);
+        
+        vertex(a.x, a.y, a.z, pic, pic);
+        vertex(d.x, d.y, d.z, 0, pic);
+        vertex(xDup, yDup, zDup, 0, 0);
+        vertex(xAup, yAup, zAup, pic,0);
+        
+        vertex(xAup, yAup, zAup, 0, 0); 
+        vertex(xBup, yBup, zBup, pic, 0);
+        vertex(xCup, yCup, zCup, pic, pic);
+        vertex(xDup, yDup, zDup, 0, pic);  
         endShape(CLOSE);
         fill(0);
       }
