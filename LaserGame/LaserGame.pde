@@ -21,7 +21,7 @@ Tile currentTile;
 int picked;
 int tmpCounter;
 boolean player1Won, player2Won;
-boolean player1Turn;
+boolean player1Turn = true;
 boolean rightOrLeftMirror;
 boolean actualLaser;
 boolean firstStart = true;
@@ -148,12 +148,6 @@ void newGame() {
 
 
 void draw() {
-  if(player1Turn){
-    image(play1, 0,0);
-  }
-  else{
-    image(play2, 0,0);
-  }
   if (player1Won) {
     gameState = GameState.PLAYER1;
   }
@@ -186,7 +180,17 @@ void draw() {
     spotLight(50, 50, 50, mouseX, mouseY, 600, 0, 0, -1, PI/2, 600); // hiiren mukana liikkuva pieni valonlahde
 
     translate(width/2.0, height/2.0, -100);
+
+
+
     sphere(400); // pallo, jonka sisällä ollaan (jotta taustalle piirtyy valoa)
+    if (player1Turn) {
+      println("playerii");
+      image(play1, -350, -180);
+    }
+    else {
+      image(play2, -350, -180);
+    }
     rotateX(rotx);
     rotateY(roty);
     //println("RotX: " + rotx%PI + ", RotY: " + roty%PI);
