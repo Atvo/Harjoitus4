@@ -9,8 +9,7 @@ GameState gameState;
 float rotx = PI/4;
 float roty = PI/4;
 Tile[][] frontTiles, backTiles, rightTiles, leftTiles, topTiles, bottomTiles;
-ArrayList<Tile> tiles2;
-Tile[][][] tiles;
+ArrayList<Tile> tilesList;
 Tile base1Tile, base2Tile, blockTile;
 Edge [] edges;
 Square front, back, right, left, top, bottom;
@@ -26,8 +25,12 @@ boolean rightOrLeftMirror;
 boolean actualLaser;
 boolean firstStart = true;
 
+//SETUP
 void setup() {
+  
   gameState = GameState.START;
+  
+  //Ladataan kuvat
   startScreen = loadImage("Lasergame.jpg");
   endScreen1 = loadImage("Player_1.jpg");
   endScreen2 = loadImage("Player_2.jpg");
@@ -38,81 +41,75 @@ void setup() {
   p2.resize(20, 20);
   play1 = loadImage("Play1.png");
   play2 = loadImage("Play2.png");
-
   block = loadImage("Block.jpg");
   block.resize(20, 20);
 
-  tmpCounter = 0;
   size(640, 360, P3D);
   tileSize = 20;
   cubeSize = 10;  
+  max = cubeSize*tileSize/2;
+  
+  //Laatat tallennetaan kahdenlaisiin tietorakenteisiin, koska taulukoita käytetään naapurintunnistuksessa
+  //ja listaa selvitettäessä valittua laattaa
   frontTiles = new Tile [cubeSize][cubeSize];
   backTiles = new Tile [cubeSize][cubeSize];
   rightTiles = new Tile [cubeSize][cubeSize];
   leftTiles = new Tile [cubeSize][cubeSize];
   topTiles = new Tile [cubeSize][cubeSize];
   bottomTiles = new Tile [cubeSize][cubeSize];
-  tiles2 = new ArrayList<Tile>();
-  tiles = new Tile [6][cubeSize][cubeSize];
-  max = cubeSize*tileSize/2;
+  tilesList = new ArrayList<Tile>();
+  
+  //Alustetaan pelin tila
   player1Won = false;
   player2Won = false;
   player1Turn = true;
   rightOrLeftMirror = true;
+  
+  //Luodaan uudet laatat ja tallennetaan ne listaan ja taulukoihin
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
       Tile tmpTile = new Tile(-max + i * tileSize, -max + k * tileSize, max, tileSize, Side.FRONT, i, k, this);
       frontTiles[i][k] = tmpTile;
-      tiles[0][i][k] = tmpTile;
-      tiles2.add(tmpTile);
+      tilesList.add(tmpTile);
     }
   }
-  this.front = new Square(Side.FRONT, -max, -max, max, -max, max, max, max, -max, max, max, max, max);
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
       Tile tmpTile = new Tile(-max + i * tileSize, -max + k * tileSize, -max, tileSize, Side.BACK, i, k, this);
       backTiles[i][k] = tmpTile;
-      tiles[1][i][k] = tmpTile;
-      tiles2.add(tmpTile);
+      tilesList.add(tmpTile);
     }
   }
-  back = new Square(Side.BACK, -max, -max, -max, -max, max, -max, max, -max, -max, max, max, -max);  
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
       Tile tmpTile = new Tile(max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.RIGHT, i, k, this);
       rightTiles[i][k] = tmpTile;
-      tiles[2][i][k] = tmpTile;
-      tiles2.add(tmpTile);
+      tilesList.add(tmpTile);
     }
   }
-  right = new Square(Side.RIGHT, max, -max, -max, max, max, -max, max, -max, max, max, -max, max);
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
       Tile tmpTile = new Tile(-max, -max + k * tileSize, -max + i * tileSize, tileSize, Side.LEFT, i, k, this);
       leftTiles[i][k] = tmpTile;
-      tiles[3][i][k] = tmpTile;
-      tiles2.add(tmpTile);
+      tilesList.add(tmpTile);
     }
   }
-  left = new Square(Side.LEFT, -max, -max, -max, -max, max, -max, -max, -max, max, max, max, -max);
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
       Tile tmpTile = new Tile(-max + i * tileSize, -max, -max + k * tileSize, tileSize, Side.TOP, i, k, this);
       topTiles[i][k] = tmpTile;
-      tiles[4][i][k] = tmpTile;
-      tiles2.add(tmpTile);
+      tilesList.add(tmpTile);
     }
   }
-  top = new Square(Side.TOP, -max, max, -max, -max, max, max, max, max, -max, max, max, max);
   for (int i = 0; i < cubeSize; i++) {
     for (int k = 0; k < cubeSize; k++) {
       Tile tmpTile = new Tile(-max + i * tileSize, max, -max + k * tileSize, tileSize, Side.BOTTOM, i, k, this);
       bottomTiles[i][k] = tmpTile;
-      tiles[5][i][k] = tmpTile;
-      tiles2.add(tmpTile);
+      tilesList.add(tmpTile);
     }
   }
-  bottom = new Square(Side.TOP, -max, -max, -max, -max, -max, max, max, -max, -max, max, -max, max);
+  
+  //Alustetaan erikoislaatat
   base1Tile = frontTiles[4][5];
   base1Tile.content = TileContent.PLAYER1BASE;
   base2Tile = frontTiles[5][5];
@@ -122,8 +119,11 @@ void setup() {
       backTiles[i][k].content = TileContent.BLOCK;
     }
   }
+  
   moveToTileNeighbor(base2Tile, Side.LEFT);
   moveToTileNeighbor(base1Tile, Side.RIGHT);
+  
+  //Tarkistetaan pitääkö musiikki aloittaa
   if (firstStart) {
     minim = new Minim(this);
     player = minim.loadFile("millionaire.mp3", 2048);
@@ -131,23 +131,10 @@ void setup() {
     firstStart = false;
   }
 }
-void newGame() {
-  player1Won = false;
-  player2Won = false;
-  player1Turn = true;
-  rightOrLeftMirror = true;
-  for (int i = 0; i < 6; i++) {
-    for (int j = 0; j < cubeSize; j++) {
-      for (int k = 0; k < cubeSize; k++) {
-        tiles[i][j][k].content = TileContent.EMPTY;
-      }
-    }
-  }
-  gameState = GameState.GOING;
-}
-
 
 void draw() {
+  
+  //Tarkistetaan pelin tilanne
   if (player1Won) {
     gameState = GameState.PLAYER1;
   }
@@ -157,6 +144,8 @@ void draw() {
   if (player1Won && player2Won) {
     gameState = GameState.TIE;
   }
+  
+  //Piirretään joko aloitusnäyttö tai lopetusnäyttö asianmukaisella voittajalla
   if (gameState == GameState.START) {
     image(startScreen, 0, 0);
   }
@@ -169,57 +158,45 @@ void draw() {
   else if (gameState == GameState.TIE) {
     image(endScreenTie, 0, 0);
   }
+  
+  //Peli on käynnissä
   else {
-
-
     background(0);
     noStroke(); // jotta sisällä oltavan pallon piirtoviivat eivät näy
     directionalLight(0, 0, 0, 0, 0, -100); // musta yleisvalo
     spotLight(200, 200, 255, width/2, height/2, 150, 0, 0, -1, PI, 1); // taustaa varten pointlight (r g b -  x y z mistä - xyz mihin - kulma - intensiteetti)
     spotLight(50, 50, 50, width/2, height/2, 150, 0, 0, -1, PI, 1); // palikkaa varten pointlight
     spotLight(50, 50, 50, mouseX, mouseY, 600, 0, 0, -1, PI/2, 600); // hiiren mukana liikkuva pieni valonlahde
-
     translate(width/2.0, height/2.0, -100);
-
-
-
     sphere(400); // pallo, jonka sisällä ollaan (jotta taustalle piirtyy valoa)
+    
+    //Piirretään kuva, joka ilmoittaa kumman pelaajan vuoro
     if (player1Turn) {
-      println("playerii");
       image(play1, -350, -180);
     }
     else {
       image(play2, -350, -180);
     }
+    
+    //Käännetään näkymää
     rotateX(rotx);
     rotateY(roty);
-    //println("RotX: " + rotx%PI + ", RotY: " + roty%PI);
-    //println("MouseX: " + mouseX + ", MouseY: " + mouseY);
-    //scale(90);
+    
+    //Selvitetään valittu laatta
     picked = getPicked();
     stroke(255);
     strokeWeight(1);
-    //line(mouseX-320, mouseY-180, 0, 0, 0, 300);
-    /*stroke(100);
-     strokeWeight(5);
-     stroke(0, 255, 0);
-     line(-100, 5, 100, 100, 5, 100);
-     stroke(100);
-     strokeWeight(1);*/
-    //noStroke();
-    /*for (int l = 0; l < 6; l++) {
-     for (int i = 0; i < cubeSize; i++) {
-     for (int k = 0; k < cubeSize; k++) {
-     tiles[l][i][k].display();
-     }
-     }
-     }*/
-    for (int i = 0; i < tiles2.size(); i++) {
-      Tile t = (Tile)tiles2.get(i);
+    
+    //Piirretään laatat
+    for (int i = 0; i < tilesList.size(); i++) {
+      Tile t = (Tile)tilesList.get(i);
       t.isCurrentTile = false;
+      
+      //Valitulle laatalle ilmoitetaan, että se on valittu
       if (i == picked) {
-        fill(#ff8080);
         t.isCurrentTile = true;
+        
+        //Jos valitussa laatassa ei ole mitään, käännetään sen peili vastaamaan tällä hetkellä valittua peilin suuntaa
         if (t.content == TileContent.EMPTY) {
           t.mirror.leftOrRight = rightOrLeftMirror;
         }
@@ -230,25 +207,8 @@ void draw() {
       t.display(true);
     }
   }
-
-
-  //frontTiles[0][0].updateLaser(0);
-}
-
-void stop()
-{
-  super.stop();
-  player.close();
-  minim.stop();
-}
-
-void mouseDragged() {
-  float rate = 0.01;
-  rotx += (pmouseY-mouseY) * rate;
-  roty += (mouseX-pmouseX) * rate;
-}
-
-void mouseMoved() {
+  
+  //Jos peliä ei ole voitettu, päivitetään laserit
   if (!player1Won && !player2Won) {
     removeAllLasers();
     this.actualLaser = true;
@@ -258,35 +218,53 @@ void mouseMoved() {
   }
 }
 
+//Lopettaa musiikin
+void stop()
+{
+  super.stop();
+  player.close();
+  minim.stop();
+}
+
+//Kääntää näkymää
+void mouseDragged() {
+  float rate = 0.01;
+  rotx += (pmouseY-mouseY) * rate;
+  roty += (mouseX-pmouseX) * rate;
+}
+
 void mouseClicked() {
-  //removeAllLasers();
+  
+  //AloitusScreeni
   if (gameState == GameState.START) {
+    //Tarkistetaan haluaako käyttäjä aloittaa pelin
     if (mouseX < 616  && 478<mouseX && 298<mouseY && mouseY<329) {
       gameState = GameState.GOING;
     }
   }
+  
+  //Peli on päättynyt
   else if (gameState == GameState.PLAYER1 || gameState == GameState.PLAYER2 || gameState == GameState.TIE) {
+    //Tarkistetaan haluaako käyttäjä aloittaa pelin uudestaan
     if (mouseX < 616  && 478<mouseX && 298<mouseY && mouseY<329) {
       gameState = GameState.START;
       setup();
     }
   }
+  
+  //Peli käynnissä
   else { 
-    tmpCounter = 0;
-    println("Picked: " + picked);
+    
+    //Jos klikataan oikealla näppäimellä, käännetään asetettavan peilin asentoa
     if (mouseButton == RIGHT) {
       rightOrLeftMirror = (rightOrLeftMirror) ? false : true;
-      /*if (rightOrLeftMirror) {
-       rightOrLeftMirror = false;
-       }
-       else {
-       rightOrLeftMirror = true;
-       }*/
     }
+    
+    //Jos klikataan vasemmalla näppäimellä ja jokin laatta on valittu, asetetaan laattaan peili
     else if (picked != -1) {
-      Tile tmpTile = tiles2.get(picked);
-      //tmpTile.updateLaser(1);
-      //tmpTile.updateLaser2(Side.LEFT);
+      Tile tmpTile = tilesList.get(picked);
+      
+      //Peilin voi asettaa vain, jos siinä ei ole alunperin peiliä ja peliä ei ole voitettu
       if (tmpTile.content == TileContent.EMPTY && !player1Won && !player2Won) {
         removeAllLasers();
         tmpTile.mirror.leftOrRight = rightOrLeftMirror;
@@ -300,115 +278,80 @@ void mouseClicked() {
     }
   }
 }
+
+/*Metodi etsii laatan, jonka päällä hiiri on. Kiitokset Tom Cardenille.
+Esimerkki katsottu täältä: http://www.tom-carden.co.uk/p5/picking_with_projection/applet/
+ja muokattu sopivaksi meidän ohjelmaan.
+
+"This one projects all the triangles to screen space, depth sorts them, and checks if
+any of the projected triangles contains the mouse point.  It's not 100% accurate, but
+for scenes without intersecting triangles it will be fine, and it's faster than the
+buffer-based method."*/
 int getPicked() {
   int picked = -1;
   if (mouseX >= 0 && mouseX < width && mouseY >= 0 && mouseY < height) {
-    for (int i = 0; i < tiles2.size(); i++) {
-      Tile t = (Tile)tiles2.get(i);
+    for (int i = 0; i < tilesList.size(); i++) {
+      Tile t = (Tile)tilesList.get(i);
       t.project();
     }
-    Collections.sort(tiles2);
-    for (int i = 0; i < tiles2.size(); i++) {
-      Tile t = (Tile)tiles2.get(i);
+    Collections.sort(tilesList);
+    for (int i = 0; i < tilesList.size(); i++) {
+      Tile t = (Tile)tilesList.get(i);
       if (t.mouseOver()) {
         picked = i;
         break;
       }
     }
   }
-  //println(picked);
   return picked;
 }
 
-
-void alustaEdges() {
-  edges = new Edge [12];
-}
-
-void checkCurrentTile() {
-  if (currentTile != null) {
-    currentTile.isCurrentTile = false;
-  }
-  Tile tmpTile = null;
-  //Tarkistetaan onko nykyinen laatta edelleen valittu, jos on, return
-
-  //Jos ei niin etsitään nykyinen laatta
-  float projectedX, projectedY;
-  float xHypo, xAlpha, X1, X2, yHypo, yAlpha, Y1, Y2;
-  for (int l = 0; l < 6; l++) {
-    for (int i = 0; i < cubeSize; i++) {
-      for (int k = 0; k < cubeSize; k++) {
-        tmpTile = tiles[l][i][k];
-        if (l == 0) {
-          //projectedX = (sin(roty)*100+cos(roty)*tileSize*(i-cubeSize/2)+width/2);
-          //println("PX: " + projectedX);
-          xHypo = (float)(Math.sqrt(Math.pow(cubeSize*tileSize/2, 2)+Math.pow(tileSize*(i-cubeSize/2), 2)));
-          if (i > 5) {
-            xAlpha = roty + acos(100/xHypo);
-          }
-          else {
-            xAlpha = roty - acos(100/xHypo);
-          }
-          X2 = xHypo*xHypo*cos(xAlpha)*sin(xAlpha)/(300-xHypo*cos(xAlpha));
-          X1 = xHypo*sin(xAlpha);
-          yHypo = (float)(Math.sqrt(Math.pow(cubeSize*tileSize/2, 2)+Math.pow(tileSize*(k-cubeSize/2), 2)));
-          if (k > 5) {
-            yAlpha = rotx + acos(100/yHypo);
-          }
-          else {
-            yAlpha = rotx - acos(100/yHypo);
-          }
-          Y2 = yHypo*yHypo*cos(yAlpha)*sin(yAlpha)/(300-yHypo*cos(yAlpha));
-          Y1 = yHypo*sin(yAlpha);
-          projectedX = width/2 + X1 + X2;
-          projectedY = height/2 + Y1 + Y2;
-
-          /*if(l == 0 && i == 5 && k == 5){
-           //println("MouseX: " + mouseX + ", MouseY: " + mouseY + ", tmpH: " + tmpHypo + ", RotY: " + roty + ", tmpA: " + tmpAlpha + ", tmpX1: " + tmpX1 + ", tmpX2: " + tmpX2 + ", ActualX: " + tiles[0][5][5].x + ", ProjectedX: " + projectedX);
-           }*/
-          if (mouseX < projectedX + tileSize && mouseX > projectedX && mouseY < projectedY + tileSize && mouseY > projectedY) {
-            println("Current tile: Front: " + i + "/" + k + ", PX: " + projectedX + ", PY: " + projectedY);
-            println("MouseX: " + mouseX + ", MouseY: " + mouseY + ", tmpH: " + xHypo + ", RotY: " + roty + ", tmpA: " + xAlpha + ", tmpX1: " + X1 + ", tmpX2: " + X2 + ", ActualX: " + tiles[0][i][k].x + ", ProjectedX: " + projectedX);
-            tiles[l][i][k].isCurrentTile = true;
-            currentTile = tiles[l][i][k];
-          }
-        }
-        // Jotenkin tarkistetaan hiiren, kameran ja laatan koordinaattien avulla, onko hiiri laatan päällä
-        // Huom kuutiota ollaan voitu pyörittää!
-      }
-    }
-  }
-}
-
-//TOP, RIGHT, LEFT, FRONT, BACK, BOTTOM
+//Metodi, joka etsii laatan naapurin tulosuunnasta riippuen ja kertoo seuraavalle laatalle menosuunnan
+//Metodi kutsuu itse itseään ja sen tarkoitus on kulkea laserin mukaisesti
 void moveToTileNeighbor(Tile prev, Side fromSide) {
 
-  //tmpCounter++;
-  //println("Move: X: " + prev.x + ", Y: " + prev.y + ", Z: " + prev.z + ", SIDE: " + prev.side + ", FROM: " + fromSide + ", SX: " + prev.squareX + ", SY: " + prev.squareY);
   Tile neighbor = null;
+  
+  //Muuttuja, joka pitää kirjaa siitä, mennäänkö sivulta toiselle
   boolean overEdge = false;
+  
+  //Seuraavan laatan tulosuunta
   Side toSide = fromSide;
-  //println("fromsIde: " + fromSide);
 
+  //Jos laatassa on peili, seuraavan laatan tulosuunta muuttuu peilin mukaan
   if (prev.content == TileContent.MIRROR) {
     toSide = prev.mirror.changeLaserDirection(fromSide);
   }
+  
+  //Jos nykyinen laatta on valittu, mutta siinä ei ole peiliä, päivitetään tieto siitä, että jatkossa laatoissa ei kulje enää oikea laser,
+  //vaan vain apu-laser.
   if (prev.isCurrentTile && prev.content == TileContent.EMPTY) {
     toSide = prev.mirror.changeLaserDirection(fromSide);
     actualLaser = false;
   }
-  if (prev.mirror != null) {
-    //fromSide = prev.mirror.changeLaserDirection(fromSide);
-  }
+  
+  //Päivitetään nykyiselle laatalle tieto sen lasereista
   prev.updateLaser2(fromSide);
+  
+  //Jos laatassa on peili, päivitetään tieto, mistä päin laattaan tullaan
   if (prev.content == TileContent.MIRROR) {
     fromSide = prev.mirror.changeLaserDirection(fromSide);
   }
+  
+  //Muulloin jos laatta on valittu ja se on tyhjä, päivitetään tulosuunta ja päivitetään tieto apu-laserista.
   else if (prev.isCurrentTile && prev.content == TileContent.EMPTY) {
     fromSide = prev.mirror.changeLaserDirection(fromSide);
     actualLaser = false;
   }
 
+  /*Tässä vaiheessa tarkistetaan naapuri. Naapurin tarkistus toimii näin:
+  1. Tarkistetaan millä kuution sivulla ollaan
+  2. Tarkistetaan mennäänkö yli reunan
+  3. Tarkistetaan suunta, josta ollaan tulossa
+  4. Selvitetään naapuri ja päivitetään menosuunta
+  
+  Tämä toistetaan jokaisella kuution sivulla ja suunnalla.*/
+  
   if (prev.side == Side.FRONT) {
     if (prev.squareX == 0 && fromSide == Side.RIGHT) {
       overEdge = true;
@@ -441,7 +384,6 @@ void moveToTileNeighbor(Tile prev, Side fromSide) {
         neighbor = frontTiles[prev.squareX+1][prev.squareY];
       }
       else {
-        //println("OVEREDGE");
         toSide = prev.side;
         neighbor = rightTiles[cubeSize-1][prev.squareY];
       }
@@ -762,14 +704,20 @@ void moveToTileNeighbor(Tile prev, Side fromSide) {
       }
     }
   }
+  //Naapuri on nyt selvillä
+  
+  //Jos naapurissa on Blocki, päivitetään naapurin laserit ja poistutaan metodista
   if (neighbor.content == TileContent.BLOCK) {
     neighbor.updateLaser2(toSide);
     return;
   }
+  
+  //Jos naapurissa on jommankumman pelaajan tukikohta, päivitetään naapurin laserit ja poistutaan metodista
   if (neighbor.content == TileContent.PLAYER1BASE) {
     neighbor.updateLaser2(toSide);
+    
+    //Jos ollaan seurattu oikeaa laseria eikä apulaseria, päivitetään voittomuuttuja
     if (actualLaser) {
-      println("PLAYER2 WINS");
       player2Won = true;
     }
     return;
@@ -777,124 +725,25 @@ void moveToTileNeighbor(Tile prev, Side fromSide) {
   if (neighbor.content == TileContent.PLAYER2BASE) {
     neighbor.updateLaser2(toSide);
     if (actualLaser) {
-      println("PLAYER1 WINS");
       player1Won = true;
     }
     return;
   }
+  
+  //Jos mennään yli reunan päivitetään vielä nykyisen laatan lasereita, jotta ne eivät katkeaisi
   if (overEdge) {
     prev.updateLaser2(neighbor.side);
-    prev.drawMyLasers2();
   }
+  
+  //Kun ollaan valmiita, kutsutaan metodia uudestaan naapurille ja päivitetyllä tulosuunnalla
   moveToTileNeighbor(neighbor, toSide);
 }
 
-void moveToTileNeighbor(Tile tile, int side2Dto) {
-  println("moveTo:  x: " + tile.squareX + "  y: " + tile.squareY + " to: " + side2Dto + "  side: " + tile.side);
-  Tile [][] neiTiles = new Tile [cubeSize][cubeSize];
-  boolean overEdge = false;
-  if (tmpCounter > 40) {
-    return;
-  }
-  tmpCounter++;
-  // tarkistetaan ollaanko menossa reunan yli 
-  if (tile.squareY == 0 && side2Dto==0) {
-    overEdge = true;
-  }
-  else if (tile.squareY == (cubeSize-1) && side2Dto==2) {
-    overEdge = true;
-  }
-  else if (tile.squareX == (cubeSize-1) && side2Dto==1) {
-    overEdge = true;
-  }
-  else if (tile.squareX == 0 && side2Dto==3) {
-    overEdge = true;
-  }    
-
-  if ((overEdge == false && tile.side == Side.FRONT) || (overEdge && tile.sides2D[side2Dto] == Side.FRONT)) {
-    neiTiles = frontTiles;
-  }
-  else if ((overEdge == false && tile.side == Side.BACK) || (overEdge && tile.sides2D[side2Dto] == Side.BACK)) {
-    neiTiles = backTiles;
-  }
-  else if ((overEdge == false && tile.side == Side.RIGHT) || (overEdge && tile.sides2D[side2Dto] == Side.RIGHT)) {
-    neiTiles = rightTiles;
-  }
-  else if ((overEdge == false && tile.side == Side.LEFT) || (overEdge && tile.sides2D[side2Dto] == Side.LEFT)) {
-    neiTiles = leftTiles;
-  }    
-  else if ((overEdge == false && tile.side == Side.TOP) || (overEdge && tile.sides2D[side2Dto] == Side.TOP)) {
-    neiTiles = topTiles;
-  }
-  else if ((overEdge == false && tile.side == Side.BOTTOM) || (overEdge && tile.sides2D[side2Dto] == Side.BOTTOM)) {
-    neiTiles = bottomTiles;
-  }
-
-
-  if (overEdge) {
-    //println("reunan yli");
-    // tarkistetaanko, onko viereisessä puolessa jollain 2 samaa kulmaa == on naapuri
-    for (int i = 0; i < cubeSize; i++) {
-      for (int k = 0; k < cubeSize; k++) {
-
-        int l = 0;
-        if (neiTiles[i][k].hasVector(tile.a)) {
-          l++;
-        }
-        if (neiTiles[i][k].hasVector(tile.b)) {
-          l++;
-        }
-        if (neiTiles[i][k].hasVector(tile.c)) {
-          l++;
-        }
-        if (neiTiles[i][k].hasVector(tile.d)) {
-          l++;
-        }
-
-        // Jos kaksi samaa kulmaa muutetaan naapurin listaa 
-        if (l>1) {
-          // println("naapuri löydetty i:" + i  + "  k: " + k + " squareY: " + tile.squareY);
-
-
-          neiTiles[i][k].laserOn(neiTiles[i][k].getSide2D(tile.side));
-          neiTiles[i][k].updateLaser(neiTiles[i][k].getSide2D(tile.side));
-        }
-      }
-    }
-  }
-
-
-  // Jos ei olla reunalla, palautetaan saman listan viereinen, y kasvaa "alas päin" x oikealle
-  // palauttaa naapurin sekä muuttaa naapurin tulolaserin
-  if (!overEdge) {
-
-    if (side2Dto == 0) {
-      neiTiles[tile.squareX][tile.squareY-1].laserOn(2);
-      neiTiles[tile.squareX][tile.squareY-1].updateLaser(2);
-    }
-    else if (side2Dto == 1) {
-      neiTiles[tile.squareX+1][tile.squareY].laserOn(3);
-      neiTiles[tile.squareX+1][tile.squareY].updateLaser(3);
-    }
-    else if (side2Dto == 2) {
-      neiTiles[tile.squareX][tile.squareY+1].laserOn(0);
-      neiTiles[tile.squareX][tile.squareY+1].updateLaser(0);
-    }
-    else if (side2Dto == 3) {
-      neiTiles[tile.squareX-1][tile.squareY].laserOn(1);
-      neiTiles[tile.squareX-1][tile.squareY].updateLaser(1);
-    }
-  }
-  //println("ERROR LaserGame CheckNeighbourg: side:  " + side2Dto );
-}
-
+//Tyhjentää kaikkien laattojen laserit
 void removeAllLasers() {
-  for (int i = 0; i < 6; i++) {
-    for (int j = 0; j < cubeSize; j++) {
-      for (int k = 0; k < cubeSize; k++) {
-        tiles[i][j][k].allLasersOff();
-      }
-    }
+  for (int i = 0; i < tilesList.size(); i++) {
+      Tile t = (Tile)tilesList.get(i);
+      t.allLasersOff();
   }
 }
 

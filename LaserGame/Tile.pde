@@ -356,28 +356,7 @@ class Tile implements Comparable {
      }*/
   }
 
-  void updateLaser(int tulosuunta2D) {
-    //println("updating in " + this.side + " x: " + this.squareX + "  y: " + this.squareY + "  suunta2D: " + tulosuunta2D + "  suunta 3D: " + sides2D[tulosuunta2D]);
-    //println("UpdateLaser: X: " + x + ", Y: " + y + ", Z: " + z);
-    // piirrä omat laserit
-    int lahtosuunta2D = 10;
-    // TODO: MUUTETAAN JOS ON PEILI
-    if (tulosuunta2D == 0) {
-      lahtosuunta2D = 2;
-    }
-    else if (tulosuunta2D == 2) {
-      lahtosuunta2D = 0;
-    }
-    else if (tulosuunta2D == 1) {
-      lahtosuunta2D = 3;
-    }
-    else if (tulosuunta2D == 3) {
-      lahtosuunta2D = 1;
-    }
-    this.lasers[lahtosuunta2D] = true;
-    display(false);
-    this.laserGame.moveToTileNeighbor(this, lahtosuunta2D);
-  }
+  
 
   void updateLaser2(Side side) {
     if (this.side == Side.FRONT) {
